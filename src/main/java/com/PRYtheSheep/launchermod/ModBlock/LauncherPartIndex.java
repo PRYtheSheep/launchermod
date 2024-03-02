@@ -25,6 +25,7 @@ public enum LauncherPartIndex implements StringRepresentable {
 
     public String getSerializedName() {
 
+        //Yes this is stupid
         switch(this){
             case P1 -> {
                 return "p1";

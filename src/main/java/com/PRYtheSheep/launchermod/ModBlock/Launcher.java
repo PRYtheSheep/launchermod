@@ -43,6 +43,7 @@ public class Launcher extends Block implements EntityBlock {
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         Direction direction = pState.getValue(FACING);
 
+        //There has got to be a better way to do this
         switch(direction){
             case NORTH -> {
                 pLevel.setBlock(pPos.offset(1,0,0), pState.setValue(PART, LauncherPartIndex.P2), 2);
