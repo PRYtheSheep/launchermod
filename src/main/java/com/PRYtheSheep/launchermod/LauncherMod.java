@@ -1,6 +1,7 @@
 package com.PRYtheSheep.launchermod;
 
-import com.PRYtheSheep.launchermod.ModBlock.Launcher;
+import com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher;
+import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,6 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.api.distmarker.Dist;
@@ -33,6 +36,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
+import java.util.function.Supplier;
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LauncherMod.MODID)
 public class LauncherMod
@@ -43,6 +48,8 @@ public class LauncherMod
     private static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "launchermod" namespace
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
+    // Create a Deferred Register to hold Block Entities
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, MODID);
     // Create a Deferred Register to hold Items which will all be registered under the "launchermod" namespace
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
     // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "launchermod" namespace
@@ -58,6 +65,11 @@ public class LauncherMod
                     .sound(SoundType.GRAVEL)
                     .lightLevel(state -> 7))
             );
+
+    public static final Supplier<BlockEntityType<LauncherBE>> LAUNCHER_BE = BLOCK_ENTITIES.register("launcher",
+            () -> BlockEntityType.Builder.of(LauncherBE::new, LAUNCHER.get()).build(null));
+
+
 
     // Creates a new BlockItem with the id "launchermod:example_block", combining the namespace and path
     public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
@@ -88,6 +100,8 @@ public class LauncherMod
 
         // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);
+        // Register the Deferred Register to the mod event bus so Block Entities get registered
+        BLOCK_ENTITIES.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
