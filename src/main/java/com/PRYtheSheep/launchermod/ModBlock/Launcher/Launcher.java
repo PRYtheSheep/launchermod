@@ -121,7 +121,8 @@ public class Launcher extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pState.getValue(PART) == LauncherPartIndex.P1) return new LauncherBE(pPos, pState);
+        //Only create a LauncherBE if it is part 14
+        if(pState.getValue(PART) == LauncherPartIndex.P14) return new LauncherBE(pPos, pState);
         return null;
     }
 
@@ -139,9 +140,11 @@ public class Launcher extends Block implements EntityBlock {
                 case NORTH -> {
 
                     for(int[] coordinates : pState.getValue(PART).number){
+                        //Get the pos to be checked and check the block
                         BlockPos posToBeChecked = pPos.offset(coordinates[0], 0, coordinates[1]);
                         BlockState stateToBeChecked = pLevel.getBlockState(posToBeChecked);
                         if(!stateToBeChecked.is(this)){
+                            //Destroy the block if it is not a launcher block
                             sLevel.destroyBlock(pPos, false);
                             return Blocks.AIR.defaultBlockState();
                         }
@@ -149,7 +152,7 @@ public class Launcher extends Block implements EntityBlock {
 
                 }
                 case EAST -> {
-
+                    //Create a 2d matrix and fill it with rotation values from the enum class
                     int[][] rotationMatrix = new int[2][2];
                     int count = 0;
                     for(int row=0; row<2; row++){
@@ -159,6 +162,7 @@ public class Launcher extends Block implements EntityBlock {
                     }
 
                     for(int[] coordinates : pState.getValue(PART).number){
+                        //Multiply the coordinates by the rotation matrix. Multiply multiple times if needed
                         for(int i=0; i<1; i++){
                             coordinates = LauncherPartIndex.multiply(coordinates, rotationMatrix);
                         }
@@ -233,8 +237,9 @@ public class Launcher extends Block implements EntityBlock {
             return null;
         } else {
             // Server side we delegate ticking to our block entity
+            //Only call tickServer() if it is part 14
             return (lvl, pos, st, blockEntity) -> {
-                if (blockEntity instanceof LauncherBE be && state.getValue(PART) == LauncherPartIndex.P2) {
+                if (blockEntity instanceof LauncherBE be && state.getValue(PART) == LauncherPartIndex.P14) {
                     be.tickServer();
                 }
             };

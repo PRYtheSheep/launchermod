@@ -2,6 +2,9 @@ package com.PRYtheSheep.launchermod;
 
 import com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher;
 import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
+import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretBarrel;
+import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretBreach;
+import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretLauncher;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -57,10 +60,6 @@ public class LauncherMod
     // Creates a new Block with the id "launchermod:example_block", combining the namespace and path
     public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
 
-    public static final DeferredBlock<Block> LAUNCHER_TURRET_LAUNCHER = BLOCKS.registerSimpleBlock("launcher_turret_launcher", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-    public static final DeferredBlock<Block> LAUNCHER_TURRET_BREACH = BLOCKS.registerSimpleBlock("launcher_turret_breach.json.json", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-    public static final DeferredBlock<Block> LAUNCHER_TURRET_BARREL = BLOCKS.registerSimpleBlock("launcher_turret_barrel.json.json", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-
     public static final DeferredBlock<Launcher> LAUNCHER = BLOCKS.register("launcher", ()->
             new Launcher(BlockBehaviour.Properties.of()
                     .destroyTime(2.0f)
@@ -72,7 +71,27 @@ public class LauncherMod
     public static final Supplier<BlockEntityType<LauncherBE>> LAUNCHER_BE = BLOCK_ENTITIES.register("launcher",
             () -> BlockEntityType.Builder.of(LauncherBE::new, LAUNCHER.get()).build(null));
 
-
+    public static final DeferredBlock<LauncherTurretBreach> LAUNCHER_TURRET_BREACH = BLOCKS.register("launcher_turret_breach", ()->
+            new LauncherTurretBreach(BlockBehaviour.Properties.of()
+                    .destroyTime(2.0f)
+                    .explosionResistance(10.0f)
+                    .sound(SoundType.GRAVEL)
+                    .lightLevel(state -> 7))
+    );
+    public static final DeferredBlock<LauncherTurretLauncher> LAUNCHER_TURRET_LAUNCHER = BLOCKS.register("launcher_turret_launcher", ()->
+            new LauncherTurretLauncher(BlockBehaviour.Properties.of()
+                    .destroyTime(2.0f)
+                    .explosionResistance(10.0f)
+                    .sound(SoundType.GRAVEL)
+                    .lightLevel(state -> 7))
+    );
+    public static final DeferredBlock<LauncherTurretBarrel> LAUNCHER_TURRET_BARREL = BLOCKS.register("launcher_turret_barrel", ()->
+            new LauncherTurretBarrel(BlockBehaviour.Properties.of()
+                    .destroyTime(2.0f)
+                    .explosionResistance(10.0f)
+                    .sound(SoundType.GRAVEL)
+                    .lightLevel(state -> 7))
+    );
 
     // Creates a new BlockItem with the id "launchermod:example_block", combining the namespace and path
     public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);

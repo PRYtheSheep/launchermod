@@ -1,5 +1,0 @@
-{
-  "loader": "neoforge:obj",
-  "model": "launchermod:models/block/example_block.obj",
-  "flip-v": true
-}
