@@ -1,0 +1,73 @@
+{
+  "variants": {
+    "facing=north,part=p5": {
+      "model": "launchermod:block/launcher_front"
+    },
+    "facing=east,part=p5": {
+      "model": "launchermod:block/launcher_front",
+      "y" : 90
+    },
+    "facing=south,part=p5": {
+      "model": "launchermod:block/launcher_front",
+      "y" : 180
+    },
+    "facing=west,part=p5": {
+      "model": "launchermod:block/launcher_front",
+      "y" : 270
+    },
+    "facing=north,part=p14": {
+      "model": "launchermod:block/launcher_rear"
+    },
+    "facing=east,part=p14": {
+      "model": "launchermod:block/launcher_rear",
+      "y" : 90
+    },
+    "facing=south,part=p14": {
+      "model": "launchermod:block/launcher_rear",
+      "y" : 180
+    },
+    "facing=west,part=p14": {
+      "model": "launchermod:block/launcher_rear",
+      "y" : 270
+    },
+    "part=p1": {
+      "model": "minecraft:block/air"
+    },
+    "part=p3": {
+      "model": "minecraft:block/air"
+    },
+    "part=p6": {
+      "model": "minecraft:block/air"
+    },
+    "part=p4": {
+      "model": "minecraft:block/air"
+    },
+    "part=p2": {
+      "model": "minecraft:block/air"
+    },
+    "part=p7": {
+      "model": "minecraft:block/air"
+    },
+    "part=p8": {
+      "model": "minecraft:block/air"
+    },
+    "part=p9": {
+      "model": "minecraft:block/air"
+    },
+    "part=p10": {
+      "model": "minecraft:block/air"
+    },
+    "part=p12": {
+      "model": "minecraft:block/air"
+    },
+    "part=p15": {
+      "model": "minecraft:block/air"
+    },
+    "part=p11": {
+      "model": "minecraft:block/air"
+    },
+    "part=p13": {
+      "model": "minecraft:block/air"
+    }
+  }
+}

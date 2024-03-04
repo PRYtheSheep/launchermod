@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -31,11 +32,11 @@ public class Launcher extends Block implements EntityBlock {
         super(p_49795_);
         StateDefinition.Builder<Block, BlockState> builder = new StateDefinition.Builder<>(this);
         this.createBlockStateDefinition(builder);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(PART, LauncherPartIndex.P1));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(PART, LauncherPartIndex.P1).setValue(FACING, Direction.NORTH));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> blockBlockStateBuilder) {
-        blockBlockStateBuilder.add(PART).add(FACING);
+        blockBlockStateBuilder.add(FACING, PART);
     }
 
     @Nullable
@@ -153,7 +154,7 @@ public class Launcher extends Block implements EntityBlock {
                     int count = 0;
                     for(int row=0; row<2; row++){
                         for(int col=0; col<2; col++){
-                            rotationMatrix[row][col] = LauncherPartIndex.ROTATIONMATRIX.number.get(0)[count++];
+                            rotationMatrix[row][col] = LauncherPartIndex.ROTATIONMATRIX[count++];
                         }
                     }
 
@@ -177,7 +178,7 @@ public class Launcher extends Block implements EntityBlock {
                     int count = 0;
                     for(int row=0; row<2; row++){
                         for(int col=0; col<2; col++){
-                            rotationMatrix[row][col] = LauncherPartIndex.ROTATIONMATRIX.number.get(0)[count++];
+                            rotationMatrix[row][col] = LauncherPartIndex.ROTATIONMATRIX[count++];
                         }
                     }
 
@@ -201,7 +202,7 @@ public class Launcher extends Block implements EntityBlock {
                     int count = 0;
                     for(int row=0; row<2; row++){
                         for(int col=0; col<2; col++){
-                            rotationMatrix[row][col] = LauncherPartIndex.ROTATIONMATRIX.number.get(0)[count++];
+                            rotationMatrix[row][col] = LauncherPartIndex.ROTATIONMATRIX[count++];
                         }
                     }
 
@@ -233,10 +234,15 @@ public class Launcher extends Block implements EntityBlock {
         } else {
             // Server side we delegate ticking to our block entity
             return (lvl, pos, st, blockEntity) -> {
-                if (blockEntity instanceof LauncherBE be && state.getValue(PART) == LauncherPartIndex.P1) {
+                if (blockEntity instanceof LauncherBE be && state.getValue(PART) == LauncherPartIndex.P2) {
                     be.tickServer();
                 }
             };
         }
+    }
+
+    @Override
+    public boolean isOcclusionShapeFullBlock(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return true;
     }
 }

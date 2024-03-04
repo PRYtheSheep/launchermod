@@ -1,0 +1,5 @@
+{
+  "loader": "neoforge:obj",
+  "model": "launchermod:models/block/launcher_turret_barrel.obj",
+  "flip-v": true
+}

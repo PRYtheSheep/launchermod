@@ -15,7 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -58,6 +57,10 @@ public class LauncherMod
     // Creates a new Block with the id "launchermod:example_block", combining the namespace and path
     public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
 
+    public static final DeferredBlock<Block> LAUNCHER_TURRET_LAUNCHER = BLOCKS.registerSimpleBlock("launcher_turret_launcher", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+    public static final DeferredBlock<Block> LAUNCHER_TURRET_BREACH = BLOCKS.registerSimpleBlock("launcher_turret_breach.json.json", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+    public static final DeferredBlock<Block> LAUNCHER_TURRET_BARREL = BLOCKS.registerSimpleBlock("launcher_turret_barrel.json.json", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+
     public static final DeferredBlock<Launcher> LAUNCHER = BLOCKS.register("launcher", ()->
             new Launcher(BlockBehaviour.Properties.of()
                     .destroyTime(2.0f)
@@ -74,7 +77,7 @@ public class LauncherMod
     // Creates a new BlockItem with the id "launchermod:example_block", combining the namespace and path
     public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
 
-    public static final DeferredItem<BlockItem> LAUNCHER_ITEM = ITEMS.registerSimpleBlockItem("launcher", LAUNCHER);
+    public static final DeferredItem<BlockItem> LAUNCHER_ITEM = ITEMS.registerSimpleBlockItem("launcher_item", LAUNCHER);
 
     // Creates a new food item with the id "launchermod:example_id", nutrition 1 and saturation 2
     public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
@@ -88,6 +91,7 @@ public class LauncherMod
             .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(EXAMPLE_BLOCK_ITEM.get());
                 output.accept(LAUNCHER_ITEM.get());
             }).build());
 

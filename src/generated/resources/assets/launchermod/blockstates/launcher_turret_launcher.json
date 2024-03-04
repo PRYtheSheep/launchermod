@@ -1,0 +1,7 @@
+{
+  "variants":{
+    "": {
+      "model": "launchermod:block/launcher_turret_launcher"
+    }
+  }
+}

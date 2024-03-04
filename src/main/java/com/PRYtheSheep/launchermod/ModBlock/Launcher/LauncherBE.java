@@ -1,5 +1,6 @@
 package com.PRYtheSheep.launchermod.ModBlock.Launcher;
 
+import com.PRYtheSheep.launchermod.LauncherMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,6 +14,5 @@ public class LauncherBE extends BlockEntity {
     }
 
     public void tickServer() {
-
     }
 }

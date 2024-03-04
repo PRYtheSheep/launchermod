@@ -125,16 +125,11 @@ public enum LauncherPartIndex implements StringRepresentable {
                     new int[] {-1,0},
                     new int[] {0,-1}
             )
-    )),
-    ROTATIONMATRIX("null", new ArrayList<int[]>(
-            List.of(
-                    //rotation matrix, 90 degress clockwise
-                    new int[]{0, 1, -1, 0}
-            )
     ));
 
     public final String name;
     public final ArrayList<int[]> number;
+    public static final int[] ROTATIONMATRIX = new int[] {0,1,-1,0};
 
     LauncherPartIndex(String s, ArrayList<int[]> a) {
         this.name = s;
