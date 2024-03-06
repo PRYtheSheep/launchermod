@@ -31,6 +31,7 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
 
     @Override
     public void render(LauncherBE pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        //TESTED ON 120 FPS
         BlockRenderDispatcher dispatcher = this.context.getBlockRenderDispatcher();
         Direction direction = pBlockEntity.getBlockState().getValue(FACING);
         BlockPos pos = pBlockEntity.getBlockPos();
@@ -105,16 +106,15 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
         pPoseStack.rotateAround(Axis.YP.rotationDegrees(27),0,0,0);
         pPoseStack.rotateAround(Axis.XP.rotationDegrees(27),0,0.75F,0.75F);
         if(flag==0){
-            count = count + 0.001;
+            count = count + 0.05;
             pPoseStack.translate(0,0,count);
         }
         else if(flag==1){
-            count = count - 0.0002;
+            count = count - 0.02;
             pPoseStack.translate(0,0,count);
         }
-        if(count>=0.6) flag = 1;
+        if(count>=0.9) flag = 1;
         if(count<=0) flag = 0;
-        System.out.println(count);
         //TESTING
 
         dispatcher.renderSingleBlock(barrel, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);

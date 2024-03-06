@@ -5,11 +5,17 @@ import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
 import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretBarrel;
 import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretBreach;
 import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretLauncher;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.MissileItem;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.MissileItemEntity;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -56,9 +62,10 @@ public class LauncherMod
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
     // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "launchermod" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-
     // Creates a new Block with the id "launchermod:example_block", combining the namespace and path
     public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+    // Create a Deferred Register to hold Item Entites
+    public static final DeferredRegister<EntityType<?>> ITEM_ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
 
     public static final DeferredBlock<Launcher> LAUNCHER = BLOCKS.register("launcher", ()->
             new Launcher(BlockBehaviour.Properties.of()
@@ -66,7 +73,7 @@ public class LauncherMod
                     .explosionResistance(10.0f)
                     .sound(SoundType.GRAVEL)
                     .lightLevel(state -> 7))
-            );
+    );
 
     public static final Supplier<BlockEntityType<LauncherBE>> LAUNCHER_BE = BLOCK_ENTITIES.register("launcher",
             () -> BlockEntityType.Builder.of(LauncherBE::new, LAUNCHER.get()).build(null));
@@ -92,7 +99,6 @@ public class LauncherMod
                     .sound(SoundType.GRAVEL)
                     .lightLevel(state -> 7))
     );
-
     // Creates a new BlockItem with the id "launchermod:example_block", combining the namespace and path
     public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
 
@@ -101,7 +107,15 @@ public class LauncherMod
     // Creates a new food item with the id "launchermod:example_id", nutrition 1 and saturation 2
     public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
             .alwaysEat().nutrition(1).saturationMod(2f).build()));
-
+    // Creates a new missile item with the id "launchermod:missile"
+    public static final DeferredItem<Item> MISSILE_ITEM = ITEMS.registerItem("missile", MissileItem::new, new Item.Properties());
+    // Register Missile Item entity here
+    public static final Supplier<EntityType<MissileItemEntity>> MISSILE_ITEM_ENTITY = ITEM_ENTITIES.register("missile",
+            () -> EntityType.Builder.of(MissileItemEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(1)
+                    .build("missile"));
 
     // Creates a creative tab with the id "launchermod:example_tab" for the example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
@@ -129,6 +143,9 @@ public class LauncherMod
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+        // Register the Deferred register to the mod event bus so Item Entities get registered
+        ITEM_ENTITIES.register(modEventBus);
+
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (launchermod) to respond directly to events.
