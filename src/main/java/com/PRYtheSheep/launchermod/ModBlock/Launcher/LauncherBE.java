@@ -1,27 +1,35 @@
 package com.PRYtheSheep.launchermod.ModBlock.Launcher;
 
-import com.PRYtheSheep.launchermod.ModItem.Projectile.MissileItemEntity;
+import com.PRYtheSheep.launchermod.Networking.Channel;
+import com.PRYtheSheep.launchermod.Networking.LauncherCountPayloadS2C;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.LAUNCHER_BE;
-import static com.PRYtheSheep.launchermod.LauncherMod.MISSILE_ITEM_ENTITY;
 
 public class LauncherBE extends BlockEntity {
     public LauncherBE(BlockPos pPos, BlockState pBlockState) {
         super(LAUNCHER_BE.get(), pPos, pBlockState);
     }
 
+    //Need to make a custom packet to send to the client side
+    public int launchCount = 0;
     int count = 0;
+
     public void tickServer() {
         if(this.level.isClientSide) return;
         //TEST
+//        count++;
+//        if(count%60==0){
+//            MissileItemEntity missileItemEntity = new MissileItemEntity(MISSILE_ITEM_ENTITY.get(), this.level);
+//            missileItemEntity.setPos(this.getBlockPos().getCenter().add(0,2,0));
+//            this.level.addFreshEntity(missileItemEntity);
+//        }
         count++;
-        if(count%60==0){
-            MissileItemEntity missileItemEntity = new MissileItemEntity(MISSILE_ITEM_ENTITY.get(), this.level);
-            missileItemEntity.setPos(this.getBlockPos().getCenter().add(0,2,0));
-            this.level.addFreshEntity(missileItemEntity);
+        if(count%40==0 && launchCount < 3){
+            launchCount++;
+            Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos()));
         }
         //END OF TEST
     }

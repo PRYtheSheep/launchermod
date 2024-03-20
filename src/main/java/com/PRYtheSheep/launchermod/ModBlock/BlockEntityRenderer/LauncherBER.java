@@ -18,8 +18,11 @@ import static com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher.FACING;
 public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
 
     BlockEntityRendererProvider.Context context;
-    static private double count = 0;
-    static private int flag = 0;
+    private double displacement = 0;
+    private int flag = 0;
+
+    private int renderLaunchCount = 0;
+
 
     public LauncherBER(BlockEntityRendererProvider.Context context) {
         this.context = context;
@@ -105,16 +108,19 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
         //TESTING
         pPoseStack.rotateAround(Axis.YP.rotationDegrees(27),0,0,0);
         pPoseStack.rotateAround(Axis.XP.rotationDegrees(27),0,0.75F,0.75F);
-        if(flag==0){
-            count = count + 0.05;
-            pPoseStack.translate(0,0,count);
+        if(flag==0 && renderLaunchCount< pBlockEntity.launchCount){
+            displacement = displacement + 0.1;
+            pPoseStack.translate(0,0,displacement);
         }
         else if(flag==1){
-            count = count - 0.02;
-            pPoseStack.translate(0,0,count);
+            displacement = displacement - 0.02;
+            pPoseStack.translate(0,0,displacement);
         }
-        if(count>=0.9) flag = 1;
-        if(count<=0) flag = 0;
+        if(displacement>=0.9 && flag==0) flag = 1;
+        if(displacement<=0 && flag==1){
+            flag = 0;
+            renderLaunchCount++;
+        }
         //TESTING
 
         dispatcher.renderSingleBlock(barrel, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
