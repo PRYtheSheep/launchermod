@@ -1,4 +1,4 @@
-package com.PRYtheSheep.launchermod.ModItem.Projectile;// Made with Blockbench 4.9.4
+package com.PRYtheSheep.launchermod.ModItem.Projectile.Missile;// Made with Blockbench 4.9.4
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
 

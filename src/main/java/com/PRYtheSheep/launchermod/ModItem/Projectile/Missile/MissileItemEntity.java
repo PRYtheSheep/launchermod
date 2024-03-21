@@ -1,4 +1,4 @@
-package com.PRYtheSheep.launchermod.ModItem.Projectile;
+package com.PRYtheSheep.launchermod.ModItem.Projectile.Missile;
 
 import com.PRYtheSheep.launchermod.LauncherMod;
 import net.minecraft.world.entity.EntityType;

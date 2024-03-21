@@ -5,8 +5,10 @@ import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
 import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretBarrel;
 import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretBreach;
 import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretLauncher;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.MissileItem;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.MissileItemEntity;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileItem;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileItemEntity;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItem;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -110,6 +112,17 @@ public class LauncherMod
     // Register Missile Item entity here
     public static final Supplier<EntityType<MissileItemEntity>> MISSILE_ITEM_ENTITY = ITEM_ENTITIES.register("missile",
             () -> EntityType.Builder.of(MissileItemEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(1)
+                    .build("missile"));
+
+    // Register a new shell item with the id "launchermod:shell"
+    public static final DeferredItem<Item> SHELL_ITEM = ITEMS.registerItem("shell", ShellItem::new, new Item.Properties());
+
+    // Register Shell Item entity here
+    public static final Supplier<EntityType<ShellItemEntity>> SHELL_ITEM_ENTITY = ITEM_ENTITIES.register("shell",
+            () -> EntityType.Builder.of(ShellItemEntity::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(4)
                     .updateInterval(1)

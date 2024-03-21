@@ -2,6 +2,8 @@ package com.PRYtheSheep.launchermod.ModBlock.Renderer;
 
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileItemEntity;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileModel;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -15,18 +17,19 @@ import net.minecraft.util.Mth;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.MODID;
 
-public class MissileRenderer extends EntityRenderer<MissileItemEntity> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "textures/entity/missile.png");
+public class ShellRenderer extends EntityRenderer<ShellItemEntity> {
 
-    private final MissileModel model;
+    public static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "textures/entity/shell.png");
 
-    public MissileRenderer(EntityRendererProvider.Context manager){
+    private final ShellModel model;
+
+    public ShellRenderer(EntityRendererProvider.Context manager){
         super(manager);
-        this.model = new MissileModel(manager.bakeLayer(MissileModel.LAYER_LOCATION));
+        this.model = new ShellModel(manager.bakeLayer(ShellModel.LAYER_LOCATION));
     }
 
     @Override
-    public void render(MissileItemEntity entity, float yaw, float pitch, PoseStack stack, MultiBufferSource bufferSource, int light) {
+    public void render(ShellItemEntity entity, float yaw, float pitch, PoseStack stack, MultiBufferSource bufferSource, int light) {
         stack.pushPose();
         stack.translate(0, -0.1, 0);
 
@@ -41,8 +44,6 @@ public class MissileRenderer extends EntityRenderer<MissileItemEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MissileItemEntity pEntity) {
-        return TEXTURE;
-    }
+    public ResourceLocation getTextureLocation(ShellItemEntity pEntity) {return TEXTURE;}
 
 }
