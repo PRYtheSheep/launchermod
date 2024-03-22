@@ -23,15 +23,13 @@ public class LauncherBE extends BlockEntity {
         if(this.level.isClientSide) return;
         //TEST
         count++;
-        if(count%60==0){
+        if(count%40==0 && launchCount < 1){
+            launchCount++;
+            Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos()));
             ShellItemEntity shellItemEntity = new ShellItemEntity(SHELL_ITEM_ENTITY.get(), this.level);
             shellItemEntity.setPos(this.getBlockPos().getCenter().add(0,2,0));
             shellItemEntity.setDeltaMovement(0,1,1);
             this.level.addFreshEntity(shellItemEntity);
-        }
-        if(count%40==0 && launchCount < 3){
-            launchCount++;
-            Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos()));
         }
         //END OF TEST
     }

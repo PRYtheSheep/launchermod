@@ -32,12 +32,10 @@ public class ShellItemEntity extends AbstractArrow{
 
     @Override
     public void tick() {
+        if(this.level().isClientSide) return;
         super.tick();
         //TEST
-        this.setDeltaMovement(new Vec3(0,1,0));
-        if(this.position().y >= 0){
-            this.kill();
-        }
+        System.out.println(this.getDeltaMovement());
         //END OF TEST
     }
 }
