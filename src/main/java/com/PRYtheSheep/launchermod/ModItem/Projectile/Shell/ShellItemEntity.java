@@ -30,12 +30,18 @@ public class ShellItemEntity extends AbstractArrow{
         return false;
     }
 
+    public float launchVelocityX;
+    public float launchVelocityY;
+    public float launchVelocityZ;
+    int count = 0;
+
     @Override
     public void tick() {
+        count++;
         if(this.level().isClientSide) return;
         super.tick();
         //TEST
-        System.out.println(this.getDeltaMovement());
+        this.setDeltaMovement(new Vec3(launchVelocityX, launchVelocityY + count * -0.05F, launchVelocityZ));
         //END OF TEST
     }
 }

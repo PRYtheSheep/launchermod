@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -19,14 +18,12 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
-public class BlockRenderer {
+public class BlockOutlineRenderer {
 
     static double previousX;
     static double previousY;

@@ -1,6 +1,5 @@
 package com.PRYtheSheep.launchermod.ModBlock.Launcher;
 
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileItemEntity;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity;
 import com.PRYtheSheep.launchermod.Networking.Channel;
 import com.PRYtheSheep.launchermod.Networking.LauncherCountPayloadS2C;
@@ -23,13 +22,16 @@ public class LauncherBE extends BlockEntity {
         if(this.level.isClientSide) return;
         //TEST
         count++;
-        if(count%40==0 && launchCount < 1){
+        if(count%40==0){
             launchCount++;
             Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos()));
-            ShellItemEntity shellItemEntity = new ShellItemEntity(SHELL_ITEM_ENTITY.get(), this.level);
-            shellItemEntity.setPos(this.getBlockPos().getCenter().add(0,2,0));
-            shellItemEntity.setDeltaMovement(0,1,1);
-            this.level.addFreshEntity(shellItemEntity);
+//            ShellItemEntity shellItemEntity = new ShellItemEntity(SHELL_ITEM_ENTITY.get(), this.level);
+//            shellItemEntity.setPos(this.getBlockPos().getCenter().add(0,1,0));
+//            shellItemEntity.setDeltaMovement(0,0.822,0.822);
+//            shellItemEntity.launchVelocityX = 0;
+//            shellItemEntity.launchVelocityY = 0.822F;
+//            shellItemEntity.launchVelocityZ = 0.822F;
+//            this.level.addFreshEntity(shellItemEntity);
         }
         //END OF TEST
     }
