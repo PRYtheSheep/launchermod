@@ -23,6 +23,7 @@ public class LauncherCountPayloadS2CclientHandler {
                     BlockEntity be = Minecraft.getInstance().level.getBlockEntity(data.pos());
                     if(be instanceof LauncherBE){
                         ((LauncherBE) be).launchCount = data.launcherCount();
+                        ((LauncherBE) be).targetPos = data.targetPos();
                     }
                 })
                 .exceptionally(e -> {

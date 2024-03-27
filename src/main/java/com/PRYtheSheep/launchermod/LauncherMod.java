@@ -126,7 +126,7 @@ public class LauncherMod
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(4)
                     .updateInterval(1)
-                    .build("missile"));
+                    .build("shell"));
 
     // Creates a creative tab with the id "launchermod:example_tab" for the example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()

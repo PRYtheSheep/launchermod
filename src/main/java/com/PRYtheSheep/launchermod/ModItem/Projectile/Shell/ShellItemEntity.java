@@ -41,7 +41,9 @@ public class ShellItemEntity extends AbstractArrow{
         if(this.level().isClientSide) return;
         super.tick();
         //TEST
-        this.setDeltaMovement(new Vec3(launchVelocityX, launchVelocityY + count * -0.05F, launchVelocityZ));
+        this.setDeltaMovement(new Vec3(0,0,0));
+        //this.setDeltaMovement(new Vec3(launchVelocityX, launchVelocityY + count * -0.05F, launchVelocityZ));
+        if(count>40) this.kill();
         //END OF TEST
     }
 }
