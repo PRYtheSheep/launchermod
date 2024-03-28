@@ -46,7 +46,7 @@ public class LauncherBE extends BlockEntity {
         Player player1 = this.level.getNearestPlayer(0, 0, 0, 128, predicate);
         if(player1!=null) targetPos = player1.getEyePosition();
 
-        if(count>40){
+        if(count>=40){
             Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos(), targetPos));
         }
         //END OF TEST
