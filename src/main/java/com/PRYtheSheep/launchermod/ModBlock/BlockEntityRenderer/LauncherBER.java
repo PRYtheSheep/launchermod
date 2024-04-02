@@ -105,7 +105,7 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
 
         //TESTING
         pPoseStack.rotateAround(Axis.YP.rotationDegrees(angle),0,0,0);
-        pPoseStack.rotateAround(Axis.XP.rotationDegrees(10),0,0.75F,0.75F);
+        pPoseStack.rotateAround(Axis.XP.rotationDegrees(55),0,0.75F,0.75F);
         //TESTING
 
         dispatcher.renderSingleBlock(breach, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
@@ -130,7 +130,7 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
 
         //TESTING
         pPoseStack.rotateAround(Axis.YP.rotationDegrees(angle),0,0,0);
-        pPoseStack.rotateAround(Axis.XP.rotationDegrees(10),0,0.75F,0.75F);
+        pPoseStack.rotateAround(Axis.XP.rotationDegrees(55),0,0.75F,0.75F);
         if(flag==0 && renderLaunchCount< pBlockEntity.launchCount){
             displacement = displacement + 0.1;
             pPoseStack.translate(0,0,displacement);

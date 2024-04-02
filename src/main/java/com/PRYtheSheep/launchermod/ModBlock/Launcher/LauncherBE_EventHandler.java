@@ -45,6 +45,7 @@ public class LauncherBE_EventHandler {
             //Check if be is launcherBE
             if(be instanceof LauncherBE){
                 ((LauncherBE) be).targetPos = targetPos;
+                ((LauncherBE) be).elevation = Integer.parseInt(textBlocks[12]);
             }
             else{
                 player.displayClientMessage(Component.literal("Invalid launcher coordinates"), true);

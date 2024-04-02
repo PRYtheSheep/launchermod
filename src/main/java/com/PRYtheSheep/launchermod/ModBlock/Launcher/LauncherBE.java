@@ -28,7 +28,7 @@ public class LauncherBE extends BlockEntity {
     //Need to make a custom packet to send to the client side
     public int launchCount = 0;
     public Vec3 targetPos = null;
-    public float elevation = 10;
+    public float elevation = 0;
     int count = 0;
 
     public void tickServer() {
@@ -38,13 +38,19 @@ public class LauncherBE extends BlockEntity {
         if(count%40==0 && targetPos!=null && count>20){
             launchCount++;
             ShellItemEntity shellItemEntity = new ShellItemEntity(SHELL_ITEM_ENTITY.get(), this.level);
-            shellItemEntity.setPos(getPositionForLaunch(this));
+            Vec3 launchPos = getPositionForLaunch(this);
+            shellItemEntity.setPos(launchPos);
+            Vec3 v = getVelocityForLaunch(launchPos, targetPos, elevation);
+            shellItemEntity.setDeltaMovement(v);
+            shellItemEntity.launchVelocityX = (float) v.x;
+            shellItemEntity.launchVelocityY = (float) v.y;
+            shellItemEntity.launchVelocityZ = (float) v.z;
             this.level.addFreshEntity(shellItemEntity);
         }
 
-        Predicate<Entity> predicate = (i) -> (i instanceof Player);
-        Player player1 = this.level.getNearestPlayer(0, 0, 0, 128, predicate);
-        if(player1!=null) targetPos = player1.getEyePosition();
+//        Predicate<Entity> predicate = (i) -> (i instanceof Player);
+//        Player player1 = this.level.getNearestPlayer(0, 0, 0, 128, predicate);
+//        if(player1!=null) targetPos = player1.getEyePosition();
 
         if(count>=40){
             Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos(), targetPos));
@@ -101,5 +107,34 @@ public class LauncherBE extends BlockEntity {
     private float angleBetween2Vectors (Vec3 v1, Vec3 v2){
         return (float) (Math.acos(v1.dot(v2) / (v1.length() * v2.length())) * (180 / Math.PI));
     }
+
+    private Vec3 getVelocityForLaunch(Vec3 launchPos, Vec3 targetPos, float elevation){
+        //Calculate the horizontal resultant vector
+        Vec3 resultantHorizontal = new Vec3(
+                targetPos.x - launchPos.x,
+                0,
+                targetPos.z - launchPos.z
+        );
+
+        //Set up the variables and convert angle to radians
+        float d = (float) resultantHorizontal.length();
+        float h = (float) (launchPos.y - targetPos.y);
+        float elevation_radian = (float) (elevation *  Math.PI/180);
+        System.out.println("d is " + d + " h is " + h);
+        //Calculate the velocity needed
+        float v = (float) Math.sqrt(
+                ( 0.025 * (Math.pow(d,2) / Math.pow(Math.cos(elevation_radian), 2)) ) / ( d * Math.tan(elevation_radian) + h )
+        );
+        System.out.println(v);
+        //Get the yaw from the resultantHorizontal
+        Vec3 xVector = new Vec3(0, 0, 1);
+        float angle = angleBetween2Vectors(resultantHorizontal, xVector);
+        if (resultantHorizontal.x > 0) angle *= -1;
+        angle += 180;
+
+        Vec3 velocity = getVectorFromPitchYaw(-elevation, angle).normalize();
+        return velocity.scale(v);
+    }
+
 }
 
