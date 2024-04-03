@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 import static com.PRYtheSheep.launchermod.LauncherMod.*;
 import static com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher.FACING;
 
-public class LauncherBE extends BlockEntity {
+public class LauncherBE extends BlockEntity{
     public LauncherBE(BlockPos pPos, BlockState pBlockState) {
         super(LAUNCHER_BE.get(), pPos, pBlockState);
     }
@@ -53,7 +53,7 @@ public class LauncherBE extends BlockEntity {
 //        if(player1!=null) targetPos = player1.getEyePosition();
 
         if(count>=40){
-            Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos(), targetPos));
+            Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos(), targetPos, elevation));
         }
         //END OF TEST
     }

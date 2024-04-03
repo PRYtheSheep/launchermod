@@ -1,6 +1,7 @@
 package com.PRYtheSheep.launchermod.Networking;
 
 import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
+import com.PRYtheSheep.launchermod.ModBlock.Renderer.BlockOutlineRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -24,11 +25,13 @@ public class LauncherCountPayloadS2CclientHandler {
                     if(be instanceof LauncherBE){
                         ((LauncherBE) be).launchCount = data.launcherCount();
                         ((LauncherBE) be).targetPos = data.targetPos();
+                        ((LauncherBE) be).elevation = data.elevation();
+                        BlockOutlineRenderer.targetPos = data.targetPos();
                     }
                 })
                 .exceptionally(e -> {
                     // Handle exception
-                    context.packetHandler().disconnect(Component.translatable("my_mod.networking.failed", e.getMessage()));
+                    context.packetHandler().disconnect(Component.translatable("launchermod.networking.failed", e.getMessage()));
                     return null;
                 });
     }

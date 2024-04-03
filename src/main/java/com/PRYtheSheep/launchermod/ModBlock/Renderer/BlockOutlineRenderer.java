@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +30,7 @@ public class BlockOutlineRenderer {
     static double previousY;
     static double previousZ;
     public static ArrayList<Vector3f> previousPos = new ArrayList<>();
-    public static int currentTick = 0;
+    public static Vec3 targetPos = null;
 
     @SubscribeEvent
     public static void onWorldRenderLast(RenderLevelStageEvent event){
@@ -37,9 +38,9 @@ public class BlockOutlineRenderer {
         //Set up
         if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
         if(Minecraft.getInstance().player == null) return;
-
+        if(targetPos == null) return;
         //Bounding box turns off for a brief moment every .5s
-        if(event.getRenderTick() %10 == 0) return;
+
 
         //Rendering the bounding box now
         PoseStack stack = event.getPoseStack();
@@ -61,7 +62,12 @@ public class BlockOutlineRenderer {
         }
 
         //Get the bounding box of the player
-        AABB aabb = player1.getBoundingBox().move(-player1.getX(), -player1.getY(), -player1.getZ());
+        //AABB aabb = player1.getBoundingBox().move(-player1.getX(), -player1.getY(), -player1.getZ());
+        AABB aabb = new AABB(new BlockPos(
+                Math.round((float)targetPos.x - 0.5F),
+                Math.round((float)targetPos.y),
+                Math.round((float)targetPos.z - 0.5F))
+                ).move(-player1.getX(), -player1.getY(), -player1.getZ());
 
         //???
         RenderSystem.depthMask(true);
@@ -86,7 +92,8 @@ public class BlockOutlineRenderer {
         stack.translate(px - s0, py - s1, pz - s2);
 
         //Render the box
-        LevelRenderer.renderLineBox(stack, vertexConsumer, aabb, 0, 0.5F, 1, 1);
+        LevelRenderer.renderLineBox(stack, vertexConsumer, aabb, 0, 1, 1, 1);
+
         stack.popPose();
 
         RenderSystem.enableDepthTest();
