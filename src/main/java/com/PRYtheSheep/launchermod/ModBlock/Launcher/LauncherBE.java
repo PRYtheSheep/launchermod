@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -33,10 +35,13 @@ public class LauncherBE extends BlockEntity{
 
     public void tickServer() {
         if(this.level.isClientSide) return;
-        //TEST
         count++;
         if(count%40==0 && targetPos!=null && count>20){
+
+            //Increment launchCount to send to client side to play recoil animation
             launchCount++;
+
+            //Create a shellItemEntity and set its position, velocity
             ShellItemEntity shellItemEntity = new ShellItemEntity(SHELL_ITEM_ENTITY.get(), this.level);
             Vec3 launchPos = getPositionForLaunch(this);
             shellItemEntity.setPos(launchPos);
@@ -45,17 +50,21 @@ public class LauncherBE extends BlockEntity{
             shellItemEntity.launchVelocityX = (float) v.x;
             shellItemEntity.launchVelocityY = (float) v.y;
             shellItemEntity.launchVelocityZ = (float) v.z;
+
+            //Add smoke particles at launchPos
+            //Cast this.level to ServerLevel, should be safe as we return at the top if it is client side
+            ServerLevel serverLevel = (ServerLevel) this.level;
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION, launchPos.x, launchPos.y, launchPos.z, 0,
+                    launchPos.x, launchPos.y,launchPos.z, 0);
+
+            //Add the shellItemEnitity to the level
             this.level.addFreshEntity(shellItemEntity);
         }
 
-//        Predicate<Entity> predicate = (i) -> (i instanceof Player);
-//        Player player1 = this.level.getNearestPlayer(0, 0, 0, 128, predicate);
-//        if(player1!=null) targetPos = player1.getEyePosition();
-
         if(count>=40){
+            //Send a payload to the client side to update client side launchCount, targetPos and elevation
             Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos(), targetPos, elevation));
         }
-        //END OF TEST
     }
 
     private Vec3 getPositionForLaunch(LauncherBE be) {

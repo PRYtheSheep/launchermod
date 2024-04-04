@@ -32,6 +32,9 @@ public class BlockOutlineRenderer {
     public static ArrayList<Vector3f> previousPos = new ArrayList<>();
     public static Vec3 targetPos = null;
 
+    private static int renderCount = 0;
+    private static double scale = 1;
+
     @SubscribeEvent
     public static void onWorldRenderLast(RenderLevelStageEvent event){
 
@@ -39,12 +42,24 @@ public class BlockOutlineRenderer {
         if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
         if(Minecraft.getInstance().player == null) return;
         if(targetPos == null) return;
-        //Bounding box turns off for a brief moment every .5s
-
+        //Cycle the scale
+        if(0 <= renderCount && renderCount <= 29){
+            scale = 0.2;
+            renderCount++;
+        } else if (30 <= renderCount && renderCount <= 59) {
+            scale = 0;
+            renderCount++;
+        } else if (60 <= renderCount && renderCount <= 88){
+            scale = -0.2;
+            renderCount++;
+        } else {
+            scale = -0.2;
+            renderCount = 0;
+        }
 
         //Rendering the bounding box now
         PoseStack stack = event.getPoseStack();
-        RenderSystem.disableDepthTest();
+        //RenderSystem.disableDepthTest();
 
         //Set up the predicate to get the closest player from 0,0,0 and within 128 blocks, return if no players
         Predicate<Entity> predicate = (i) -> (i instanceof Player);
@@ -67,7 +82,7 @@ public class BlockOutlineRenderer {
                 Math.round((float)targetPos.x - 0.5F),
                 Math.round((float)targetPos.y),
                 Math.round((float)targetPos.z - 0.5F))
-                ).move(-player1.getX(), -player1.getY(), -player1.getZ());
+                ).move(-player1.getX(), -player1.getY(), -player1.getZ()).inflate(scale);
 
         //???
         RenderSystem.depthMask(true);
@@ -96,6 +111,6 @@ public class BlockOutlineRenderer {
 
         stack.popPose();
 
-        RenderSystem.enableDepthTest();
+        //RenderSystem.enableDepthTest();
     }
 }
