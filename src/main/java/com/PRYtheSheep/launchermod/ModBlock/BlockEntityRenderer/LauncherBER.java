@@ -75,7 +75,7 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
 
         //Set it so the block faces the targetPos
         //"Angle" is used by breach and barrel
-        float angle = getAngle(pBlockEntity,currentYaw);
+        float angle = getAngle(pBlockEntity,defaultYaw);
         pPoseStack.rotateAround(Axis.YP.rotationDegrees(angle),0,0,0);
 
 
@@ -162,9 +162,7 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
         return (float) (Math.acos(v1.dot(v2) / (v1.length() * v2.length())) * (180 / Math.PI));
     }
 
-    //Takes in a LauncherBE entity and the current yaw. Outputs a float array with 2 entries.
-    //First entry is the angle between the currentYaw and targetPos, second entry is the y
-    //component of the cross vector (to determine clockwise or anticlockwise rotation
+    //Takes in a LauncherBE entity and the current yaw. Returns angle
     private float getAngle(LauncherBE pBlockEntity, int currentYaw){
         //Check if targetPos is null
         if(pBlockEntity.targetPos==null) return 0;

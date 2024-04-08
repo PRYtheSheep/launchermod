@@ -129,7 +129,6 @@ public class LauncherBE extends BlockEntity{
         float d = (float) resultantHorizontal.length();
         float h = (float) (launchPos.y - targetPos.y);
         float elevation_radian = (float) (elevation *  Math.PI/180);
-        System.out.println("d is " + d + " h is " + h);
         //Calculate the velocity needed
         float v = (float) Math.sqrt(
                 ( 0.025 * (Math.pow(d,2) / Math.pow(Math.cos(elevation_radian), 2)) ) / ( d * Math.tan(elevation_radian) + h )

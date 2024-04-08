@@ -6,6 +6,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class ShellItemEntity extends AbstractArrow{
@@ -24,6 +27,40 @@ public class ShellItemEntity extends AbstractArrow{
 
     protected ShellItemEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity pOwner, Level pLevel, ItemStack pPickupItemStack) {
         super(pEntityType, pOwner, pLevel, pPickupItemStack);
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult pResult) {
+        super.onHitEntity(pResult);
+        if(this.level().isClientSide) return;
+
+        //Explode if it hits an entity
+        this.level().explode(
+                null,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                3F,
+                Level.ExplosionInteraction.TNT
+        );
+        this.kill();
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult pResult) {
+        super.onHitBlock(pResult);
+        if(this.level().isClientSide) return;
+
+        //Explode if it hits a block
+        this.level().explode(
+                null,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                3F,
+                Level.ExplosionInteraction.TNT
+        );
+        this.kill();
     }
 
     public boolean isFoil() {
