@@ -53,4 +53,34 @@ public class LauncherBE_EventHandler {
         }
     }
 
+    private static void parseText2(String text, Level level, ServerPlayer player){
+        String delimiter = " ";
+        //Split the text by " ", then do a series of checks to determine the command
+        String[] textBlocks = text.split(delimiter);
+
+        //Check if the first 2 blocks joins to SET LAUNCHER @
+        String toCheck = textBlocks[0] + delimiter + textBlocks[1] + delimiter + textBlocks[2];
+        String patternString = "SET LAUNCHER AT";
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(toCheck);
+        //Return if it does not match
+        if(!matcher.matches()) return;
+
+        //Check if the next 3 blocks are integers
+        toCheck = textBlocks[3] + delimiter + textBlocks[4] + delimiter + textBlocks[5];
+        patternString = "-?\\d+";
+        pattern = Pattern.compile(patternString);
+        matcher = pattern.matcher(toCheck);
+        //Return if it does not match
+        if(!matcher.matches()) return;
+
+        //Get the block entity at the coordinate
+
+        //Return error message if the block entity is not a LauncherBE
+
+        //Check if the next block is TO
+
+        //Check if the next 3 blocks
+    }
+
 }
