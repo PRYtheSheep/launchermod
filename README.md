@@ -1,4 +1,8 @@
 Launcher mod by PRYtheSheep.
 WIP.
 To figure out:
-Break all blocks when one block is broken
+Better text parser for LauncherBE 
+Animations for LauncherBER
+Redesign launcher platform
+Adjust launcher design
+
