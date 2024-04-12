@@ -14,6 +14,8 @@ import net.neoforged.neoforge.event.ServerChatEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher.PART;
+
 @Mod.EventBusSubscriber(modid = LauncherMod.MODID)
 public class LauncherBE_EventHandler {
     @SubscribeEvent
@@ -68,19 +70,34 @@ public class LauncherBE_EventHandler {
 
         //Check if the next 3 blocks are integers
         toCheck = textBlocks[3] + delimiter + textBlocks[4] + delimiter + textBlocks[5];
-        patternString = "-?\\d+";
+        patternString = "-?\\d+ -?\\d+ -?\\d+";
         pattern = Pattern.compile(patternString);
         matcher = pattern.matcher(toCheck);
         //Return if it does not match
         if(!matcher.matches()) return;
 
         //Get the block entity at the coordinate
+        BlockPos blockPos = new BlockPos(
+                Integer.parseInt(textBlocks[3]),
+                Integer.parseInt(textBlocks[4]),
+                Integer.parseInt(textBlocks[5]));
+        BlockEntity be = level.getBlockEntity(blockPos);
 
-        //Return error message if the block entity is not a LauncherBE
+        //Return error message if the block entity is not a LauncherBE and not LauncherPartIndex.P14
+        if(!(be instanceof LauncherBE) && be.getBlockState().getValue(PART) != LauncherPartIndex.P14){
+            player.displayClientMessage(Component.literal("Invalid launcher coordinates"), true);
+        }
 
         //Check if the next block is TO
+        toCheck = textBlocks[6];
+        patternString = "TO";
+        pattern = Pattern.compile(patternString);
+        matcher = pattern.matcher(toCheck);
+        //Return if it does not match
+        if(!matcher.matches()) return;
 
-        //Check if the next 3 blocks
+        //Check if the next block(s) are coordinates or NULL
+
     }
 
 }
