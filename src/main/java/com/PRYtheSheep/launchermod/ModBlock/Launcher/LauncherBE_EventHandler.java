@@ -26,36 +26,6 @@ public class LauncherBE_EventHandler {
     }
 
     private static void parseText(String text, Level level, ServerPlayer player){
-        //Text structure is
-        //SET LAUNCHER @ x y z TO targetX targetY targetZ WITH ANGLE a
-        String patternString = "^SET LAUNCHER @ (-?\\d+(\\.\\d+)?) (-?\\d+(\\.\\d+)?) (-?\\d+(\\.\\d+)?) TO (-?\\d+(\\.\\d+)?) (-?\\d+(\\.\\d+)?) (-?\\d+(\\.\\d+)?) WITH ANGLE (?:[0-9]|[1-8][0-9]|90)(\\.\\d+)?$";
-        Pattern pattern = Pattern.compile(patternString);
-        Matcher matcher = pattern.matcher(text);
-        if(matcher.matches()){
-            //Text matches pattern
-            String[] textBlocks = text.split(" ");
-            BlockPos launcherBEpos = new BlockPos(
-                    Integer.parseInt(textBlocks[3]),
-                    Integer.parseInt(textBlocks[4]),
-                    Integer.parseInt(textBlocks[5]));
-            Vec3 targetPos = new Vec3(
-                    Integer.parseInt(textBlocks[7])+0.5,
-                    Integer.parseInt(textBlocks[8]),
-                    Integer.parseInt(textBlocks[9])+0.5);
-            BlockEntity be = level.getBlockEntity(launcherBEpos);
-
-            //Check if be is launcherBE
-            if(be instanceof LauncherBE){
-                ((LauncherBE) be).targetPos = targetPos;
-                ((LauncherBE) be).elevation = Integer.parseInt(textBlocks[12]);
-            }
-            else{
-                player.displayClientMessage(Component.literal("Invalid launcher coordinates"), true);
-            }
-        }
-    }
-
-    private static void parseText2(String text, Level level, ServerPlayer player){
         String delimiter = " ";
         //Split the text by " ", then do a series of checks to determine the command
         String[] textBlocks = text.split(delimiter);
@@ -97,7 +67,34 @@ public class LauncherBE_EventHandler {
         if(!matcher.matches()) return;
 
         //Check if the next block(s) are coordinates or NULL
+        toCheck = textBlocks[7];
+        patternString = "NULL";
+        pattern = Pattern.compile(patternString);
+        matcher = pattern.matcher(toCheck);
+        if(matcher.matches()){
+            //Text block is NULL, set the target blockPos to null and return
+            ((LauncherBE) be).targetPos = null;
+            player.displayClientMessage(Component.literal("Launcher target set to NULL"), true);
+            return;
+        }
 
+        toCheck = textBlocks[7] + delimiter + textBlocks[8] + delimiter + textBlocks[9] + delimiter +
+                textBlocks[10] + delimiter + textBlocks[11] + delimiter + textBlocks[12];
+        patternString = "-?\\d+ -?\\d+ -?\\d+ WITH ANGLE (?:[0-9]|[1-8][0-9]|90)(\\\\.\\\\d+)?$";
+        pattern = Pattern.compile(patternString);
+        matcher = pattern.matcher(toCheck);
+        if(matcher.matches()){
+            //Text blocks are valid coordinates and angle
+            Vec3 targetPos = new Vec3(
+                    Integer.parseInt(textBlocks[7])+0.5,
+                    Integer.parseInt(textBlocks[8]),
+                    Integer.parseInt(textBlocks[9])+0.5);
+            ((LauncherBE) be).targetPos = targetPos;
+            ((LauncherBE) be).elevation = Integer.parseInt(textBlocks[12]);
+        }
+        else{
+            player.displayClientMessage(Component.literal("Invalid target coordinates or angle"), true);
+        }
     }
 
 }

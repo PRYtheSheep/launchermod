@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class ShellItemEntity extends AbstractArrow{
@@ -70,16 +69,16 @@ public class ShellItemEntity extends AbstractArrow{
     public float launchVelocityX;
     public float launchVelocityY;
     public float launchVelocityZ;
-    int count = 0;
+    int tick = 0;
 
     @Override
     public void tick() {
-        count++;
+        tick++;
         if(this.level().isClientSide) return;
         super.tick();
         //TEST
-        this.setDeltaMovement(new Vec3(launchVelocityX, launchVelocityY + count * -0.05F, launchVelocityZ));
-        if(count>=200) this.kill();
+        this.setDeltaMovement(new Vec3(launchVelocityX, launchVelocityY + tick * -0.05F, launchVelocityZ));
+        if(tick>=200) this.kill();
         //END OF TEST
     }
 }
