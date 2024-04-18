@@ -28,6 +28,7 @@ public class LauncherBE_EventHandler {
     private static void parseText(String text, Level level, ServerPlayer player){
         String delimiter = " ";
         //Split the text by " ", then do a series of checks to determine the command
+        //e.g. SET LAUNCHER AT 11 -60 4 TO 15 -61 24 WITH ANGLE 15
         String[] textBlocks = text.split(delimiter);
 
         //Check if the first 2 blocks joins to SET LAUNCHER @
