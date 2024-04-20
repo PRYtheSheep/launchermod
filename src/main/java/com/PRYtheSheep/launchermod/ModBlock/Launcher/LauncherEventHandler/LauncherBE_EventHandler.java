@@ -1,6 +1,8 @@
-package com.PRYtheSheep.launchermod.ModBlock.Launcher;
+package com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherEventHandler;
 
 import com.PRYtheSheep.launchermod.LauncherMod;
+import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
+import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherPartIndex;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -75,6 +77,7 @@ public class LauncherBE_EventHandler {
         if(matcher.matches()){
             //Text block is NULL, set the target blockPos to null and return
             ((LauncherBE) be).targetPos = null;
+            ((LauncherBE) be).elevation = 0;
             player.displayClientMessage(Component.literal("Launcher target set to NULL"), true);
             return;
         }

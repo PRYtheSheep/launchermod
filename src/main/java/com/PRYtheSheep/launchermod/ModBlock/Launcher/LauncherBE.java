@@ -2,22 +2,14 @@ package com.PRYtheSheep.launchermod.ModBlock.Launcher;
 
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity;
 import com.PRYtheSheep.launchermod.Networking.Channel;
-import com.PRYtheSheep.launchermod.Networking.LauncherCountPayloadS2C;
-import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
+import com.PRYtheSheep.launchermod.Networking.LauncherPayloadS2C;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.function.Predicate;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.*;
 import static com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher.FACING;
@@ -63,7 +55,7 @@ public class LauncherBE extends BlockEntity{
 
         if(count>=40){
             //Send a payload to the client side to update client side launchCount, targetPos and elevation
-            Channel.sendToServer(new LauncherCountPayloadS2C(launchCount, this.getBlockPos(), targetPos, elevation));
+            Channel.sendToServer(new LauncherPayloadS2C(launchCount, this.getBlockPos(), targetPos, elevation));
         }
     }
 
@@ -133,7 +125,6 @@ public class LauncherBE extends BlockEntity{
         float v = (float) Math.sqrt(
                 ( 0.025 * (Math.pow(d,2) / Math.pow(Math.cos(elevation_radian), 2)) ) / ( d * Math.tan(elevation_radian) + h )
         );
-        System.out.println(v);
         //Get the yaw from the resultantHorizontal
         Vec3 xVector = new Vec3(0, 0, 1);
         float angle = angleBetween2Vectors(resultantHorizontal, xVector);

@@ -8,11 +8,11 @@ import net.minecraft.world.phys.Vec3;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.MODID;
 
-public record LauncherCountPayloadS2C(int launcherCount, BlockPos pos, Vec3 targetPos, float elevation) implements CustomPacketPayload {
+public record LauncherPayloadS2C(int launcherCount, BlockPos pos, Vec3 targetPos, float elevation) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID = new ResourceLocation(MODID, "launchcount");
+    public static final ResourceLocation ID = new ResourceLocation(MODID, "launch");
 
-    public LauncherCountPayloadS2C(final FriendlyByteBuf buffer) {
+    public LauncherPayloadS2C(final FriendlyByteBuf buffer) {
         this(buffer.readInt(), buffer.readBlockPos(), buffer.readVec3(), buffer.readFloat());
     }
 

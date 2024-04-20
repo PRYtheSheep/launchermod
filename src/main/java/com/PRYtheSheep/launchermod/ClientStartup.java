@@ -3,10 +3,12 @@ package com.PRYtheSheep.launchermod;
 import com.PRYtheSheep.launchermod.ModBlock.BlockEntityRenderer.LauncherBER;
 import com.PRYtheSheep.launchermod.ModBlock.Renderer.ShellRenderer;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellModel;
-import com.PRYtheSheep.launchermod.Networking.LauncherCountPayloadS2CclientHandler;
-import com.PRYtheSheep.launchermod.Networking.LauncherCountPayloadS2C;
+import com.PRYtheSheep.launchermod.Networking.LauncherPayloadS2CclientHandler;
+import com.PRYtheSheep.launchermod.Networking.LauncherPayloadS2C;
 import com.PRYtheSheep.launchermod.ModBlock.Renderer.MissileRenderer;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileModel;
+import com.PRYtheSheep.launchermod.Networking.TracerPayloadS2C;
+import com.PRYtheSheep.launchermod.Networking.TracerS2CclientHandler;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -37,7 +39,9 @@ public class ClientStartup {
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlerEvent event) {
         final IPayloadRegistrar registrar = event.registrar(MODID);
-        registrar.play(LauncherCountPayloadS2C.ID, LauncherCountPayloadS2C::new, handler -> handler
-                .server(LauncherCountPayloadS2CclientHandler.getInstance()::handleData));
+        registrar.play(LauncherPayloadS2C.ID, LauncherPayloadS2C::new, handler -> handler
+                .server(LauncherPayloadS2CclientHandler.getInstance()::handleData));
+        registrar.play(TracerPayloadS2C.ID, TracerPayloadS2C::new, handler -> handler
+                .server(TracerS2CclientHandler.getInstance()::handleData));
     }
 }

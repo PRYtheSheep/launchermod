@@ -1,4 +1,4 @@
-package com.PRYtheSheep.launchermod.ModBlock.Renderer;
+package com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherRenderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,7 +16,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import org.joml.Vector3f;
+
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
@@ -29,7 +29,7 @@ public class BlockOutlineRenderer {
     static double previousX;
     static double previousY;
     static double previousZ;
-    public static ArrayList<Vector3f> previousPos = new ArrayList<>();
+    public static ArrayList<Vec3> previousPos = new ArrayList<>();
     public static Vec3 targetPos = null;
 
     private static int renderCount = 0;
@@ -63,7 +63,7 @@ public class BlockOutlineRenderer {
 
         //Set up the predicate to get the closest player from 0,0,0 and within 128 blocks, return if no players
         Predicate<Entity> predicate = (i) -> (i instanceof Player);
-        Player player1 = Minecraft.getInstance().level.getNearestPlayer(0, 0, 0, 128, predicate);
+        Player player1 = Minecraft.getInstance().level.getNearestPlayer(0, 0, 0, 256, predicate);
         if(player1==null) return;
 
         //Previous pos stores the previous posiiton of the player
@@ -73,7 +73,7 @@ public class BlockOutlineRenderer {
             previousPos.get(0);
         }
         catch(Exception e){
-            previousPos.add( previousPos.size(), new Vector3f(0 ,0 ,0));
+            previousPos.add( previousPos.size(), new Vec3(0 ,0 ,0));
         }
 
         //Get the bounding box of the player
@@ -97,7 +97,7 @@ public class BlockOutlineRenderer {
         previousX = player1.getX();
         previousY = player1.getY();
         previousZ = player1.getZ();
-        previousPos.set(0, new Vector3f((float) previousX, (float) previousY, (float) previousZ));
+        previousPos.set(0, new Vec3((float) previousX, (float) previousY, (float) previousZ));
         Vec3 camvec = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         double s0 = camvec.x;
         double s1 = camvec.y;

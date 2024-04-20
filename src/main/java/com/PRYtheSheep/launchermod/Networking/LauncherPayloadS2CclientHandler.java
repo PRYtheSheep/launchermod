@@ -1,22 +1,21 @@
 package com.PRYtheSheep.launchermod.Networking;
 
 import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
-import com.PRYtheSheep.launchermod.ModBlock.Renderer.BlockOutlineRenderer;
+import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherRenderer.BlockOutlineRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class LauncherCountPayloadS2CclientHandler {
+public class LauncherPayloadS2CclientHandler {
 
-    private static final LauncherCountPayloadS2CclientHandler INSTANCE = new LauncherCountPayloadS2CclientHandler();
+    private static final LauncherPayloadS2CclientHandler INSTANCE = new LauncherPayloadS2CclientHandler();
 
-    public static LauncherCountPayloadS2CclientHandler getInstance() {
+    public static LauncherPayloadS2CclientHandler getInstance() {
         return INSTANCE;
     }
 
-    public void handleData(final LauncherCountPayloadS2C data, final PlayPayloadContext context) {
+    public void handleData(final LauncherPayloadS2C data, final PlayPayloadContext context) {
         // Do something with the data, on the network thread
 
         // Do something with the data, on the main thread
