@@ -39,11 +39,7 @@ public class FlightPathRenderer {
         if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
         if(Minecraft.getInstance().player == null) return;
         //At least 2 positions in entityPos
-        if(tick>200) {
-            entityPos.clear();
-            tick = 0;
-        }
-        if(entityPos.size() == 0 || entityPos.size() == 1) return;
+        if(entityPos.size() < 1) return;
 
         //Rendering the bounding box now
         PoseStack stack = event.getPoseStack();
@@ -52,7 +48,14 @@ public class FlightPathRenderer {
         //Set up the predicate to get the closest player from 0,0,0 and within 128 blocks, return if no players
         Predicate<Entity> predicate = (i) -> (i instanceof Player);
         Player player1 = Minecraft.getInstance().level.getNearestPlayer(0, 0, 0, 256, predicate);
-        if(player1==null) return;
+        if(player1==null){
+            try{
+                Vec3 lastPos = entityPos.get(entityPos.size()-1);
+                player1 = Minecraft.getInstance().level.getNearestPlayer(lastPos.x, lastPos.y, lastPos.z, 256, predicate);
+            } catch (Exception ignored) {
+
+            }
+        }
 
         //???
         RenderSystem.depthMask(true);

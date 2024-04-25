@@ -1,15 +1,21 @@
 package com.PRYtheSheep.launchermod.ModBlock.Launcher;
 
+import com.PRYtheSheep.launchermod.LauncherMod;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity;
 import com.PRYtheSheep.launchermod.Networking.Channel;
 import com.PRYtheSheep.launchermod.Networking.LauncherPayloadS2C;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.ticket.ChunkTicketManager;
+import net.neoforged.neoforge.common.world.chunk.TicketController;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.*;
 import static com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher.FACING;
@@ -18,6 +24,8 @@ public class LauncherBE extends BlockEntity{
     public LauncherBE(BlockPos pPos, BlockState pBlockState) {
         super(LAUNCHER_BE.get(), pPos, pBlockState);
     }
+
+    public static final TicketController LAUNCHER_TICKET_CONTROLLER = new TicketController(new ResourceLocation(LauncherMod.MODID, "launcher"));
 
     //Need to make a custom packet to send to the client side
     public int launchCount = 0;
@@ -28,6 +36,19 @@ public class LauncherBE extends BlockEntity{
     public void tickServer() {
         if(this.level.isClientSide) return;
         count++;
+
+        //TESTING TICKET CONTROLLER
+        LAUNCHER_TICKET_CONTROLLER.forceChunk(
+                (ServerLevel) this.level,
+                this.getBlockPos(),
+                SectionPos.blockToSectionCoord(
+                        this.getBlockPos().getX()),
+                SectionPos.blockToSectionCoord(
+                        this.getBlockPos().getZ()),
+                true,
+                true);
+        //END OF TESTING
+
         if(count%40==0 && targetPos!=null && count>20){
 
             //Increment launchCount to send to client side to play recoil animation

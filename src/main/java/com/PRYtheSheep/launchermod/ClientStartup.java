@@ -15,10 +15,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.*;
+import static com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE.LAUNCHER_TICKET_CONTROLLER;
+import static com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity.SHELL_TICKET_CONTROLLER;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientStartup {
@@ -37,11 +40,17 @@ public class ClientStartup {
         event.registerLayerDefinition(ShellModel.LAYER_LOCATION, ShellModel::createBodyLayer);
     }
     @SubscribeEvent
-    public static void register(final RegisterPayloadHandlerEvent event) {
+    public static void registerPayload(final RegisterPayloadHandlerEvent event) {
         final IPayloadRegistrar registrar = event.registrar(MODID);
         registrar.play(LauncherPayloadS2C.ID, LauncherPayloadS2C::new, handler -> handler
                 .server(LauncherPayloadS2CclientHandler.getInstance()::handleData));
         registrar.play(TracerPayloadS2C.ID, TracerPayloadS2C::new, handler -> handler
                 .server(TracerS2CclientHandler.getInstance()::handleData));
+    }
+
+    @SubscribeEvent
+    public static void registerChunkTicketController(RegisterTicketControllersEvent event){
+        event.register(LAUNCHER_TICKET_CONTROLLER);
+        event.register(SHELL_TICKET_CONTROLLER);
     }
 }

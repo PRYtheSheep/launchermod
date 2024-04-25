@@ -31,6 +31,7 @@ public class BlockOutlineRenderer {
     static double previousZ;
     public static ArrayList<Vec3> previousPos = new ArrayList<>();
     public static Vec3 targetPos = null;
+    public static BlockPos currentPos = null;
 
     private static int renderCount = 0;
     private static double scale = 1;
@@ -63,8 +64,13 @@ public class BlockOutlineRenderer {
 
         //Set up the predicate to get the closest player from 0,0,0 and within 128 blocks, return if no players
         Predicate<Entity> predicate = (i) -> (i instanceof Player);
-        Player player1 = Minecraft.getInstance().level.getNearestPlayer(0, 0, 0, 256, predicate);
+        Player player1 = Minecraft.getInstance().level.getNearestPlayer(currentPos.getX(), currentPos.getY(), currentPos.getZ(), 128, predicate);
+        if(player1==null){
+            player1 = Minecraft.getInstance().level.getNearestPlayer(targetPos.x, targetPos.y, targetPos.z, 128, predicate);
+        }
         if(player1==null) return;
+        System.out.println("running");
+
 
         //Previous pos stores the previous posiiton of the player
         //When the world is first loaded, previous pos is empty, so use a try catch statement to get the previous pos
