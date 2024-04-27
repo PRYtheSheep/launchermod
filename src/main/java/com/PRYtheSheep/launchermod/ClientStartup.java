@@ -1,11 +1,11 @@
 package com.PRYtheSheep.launchermod;
 
 import com.PRYtheSheep.launchermod.ModBlock.BlockEntityRenderer.LauncherBER;
-import com.PRYtheSheep.launchermod.ModBlock.Renderer.ShellRenderer;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.ProjectileRenderer.ShellRenderer;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellModel;
 import com.PRYtheSheep.launchermod.Networking.LauncherPayloadS2CclientHandler;
 import com.PRYtheSheep.launchermod.Networking.LauncherPayloadS2C;
-import com.PRYtheSheep.launchermod.ModBlock.Renderer.MissileRenderer;
+import com.PRYtheSheep.launchermod.ModItem.Projectile.ProjectileRenderer.MissileRenderer;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileModel;
 import com.PRYtheSheep.launchermod.Networking.TracerPayloadS2C;
 import com.PRYtheSheep.launchermod.Networking.TracerS2CclientHandler;

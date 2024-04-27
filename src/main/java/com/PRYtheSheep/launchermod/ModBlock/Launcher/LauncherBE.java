@@ -31,11 +31,12 @@ public class LauncherBE extends BlockEntity{
     public int launchCount = 0;
     public Vec3 targetPos = null;
     public float elevation = 0;
-    int count = 0;
+    int tick = 0;
+    public boolean canFire = true;
 
     public void tickServer() {
         if(this.level.isClientSide) return;
-        count++;
+        tick++;
 
         //TESTING TICKET CONTROLLER
         LAUNCHER_TICKET_CONTROLLER.forceChunk(
@@ -49,7 +50,7 @@ public class LauncherBE extends BlockEntity{
                 true);
         //END OF TESTING
 
-        if(count%40==0 && targetPos!=null && count>20){
+        if(tick%40==0 && targetPos!=null && tick>20 && canFire){
 
             //Increment launchCount to send to client side to play recoil animation
             launchCount++;
@@ -67,14 +68,17 @@ public class LauncherBE extends BlockEntity{
             //Add smoke particles at launchPos
             //Cast this.level to ServerLevel, should be safe as we return at the top if it is client side
             ServerLevel serverLevel = (ServerLevel) this.level;
-            serverLevel.sendParticles(ParticleTypes.EXPLOSION, launchPos.x, launchPos.y, launchPos.z, 0,
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION, launchPos.x, launchPos.y, launchPos.z, 1,
                     launchPos.x, launchPos.y,launchPos.z, 0);
 
+            shellItemEntity.owner = this;
             //Add the shellItemEnitity to the level
             this.level.addFreshEntity(shellItemEntity);
+
+            canFire = false;
         }
 
-        if(count>=40){
+        if(tick>=40){
             //Send a payload to the client side to update client side launchCount, targetPos and elevation
             Channel.sendToServer(new LauncherPayloadS2C(launchCount, this.getBlockPos(), targetPos, elevation));
         }
@@ -83,23 +87,18 @@ public class LauncherBE extends BlockEntity{
     private Vec3 getPositionForLaunch(LauncherBE be) {
 
         Vec3 launcherPos = null;
-        int currentYaw = 0;
         Direction direction = be.getBlockState().getValue(FACING);
         switch (direction) {
             case NORTH -> {
-                currentYaw = 0;
                 launcherPos = be.getBlockPos().getCenter().add(0,0,1);
             }
             case EAST -> {
-                currentYaw = 90;
                 launcherPos = be.getBlockPos().getCenter().add(-1,0,0);
             }
             case WEST -> {
-                currentYaw = -90;
                 launcherPos = be.getBlockPos().getCenter().add(1,0,0);
             }
             case SOUTH -> {
-                currentYaw = -180;
                 launcherPos = be.getBlockPos().getCenter().add(0,0,-1);
             }
 
@@ -115,7 +114,7 @@ public class LauncherBE extends BlockEntity{
 
         Vec3 difference = getVectorFromPitchYaw(0, angle).scale(-.75).add(0,1.05,0);
         launcherPos = launcherPos.add(difference);
-        return  launcherPos.add(getVectorFromPitchYaw(-elevation, angle).scale(5.5));
+        return  launcherPos.add(getVectorFromPitchYaw(-elevation, angle).scale(8));
     }
 
     private Vec3 getVectorFromPitchYaw ( float pitch, float yaw){

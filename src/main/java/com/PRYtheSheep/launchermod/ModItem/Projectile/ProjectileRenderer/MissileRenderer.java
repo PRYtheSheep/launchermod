@@ -1,4 +1,4 @@
-package com.PRYtheSheep.launchermod.ModBlock.Renderer;
+package com.PRYtheSheep.launchermod.ModItem.Projectile.ProjectileRenderer;
 
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileItemEntity;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileModel;

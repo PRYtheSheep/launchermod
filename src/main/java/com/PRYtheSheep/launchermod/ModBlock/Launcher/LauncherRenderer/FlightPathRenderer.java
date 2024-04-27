@@ -26,11 +26,8 @@ import static com.PRYtheSheep.launchermod.LauncherMod.MODID;
 @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
 public class FlightPathRenderer {
 
-    static double previousX;
-    static double previousY;
-    static double previousZ;
     public static ArrayList<Vec3> entityPos = new ArrayList<>();
-    static int tick = 0;
+    public static int size = 0;
 
     @SubscribeEvent
     public static void onWorldRenderLast(RenderLevelStageEvent event){
@@ -45,18 +42,6 @@ public class FlightPathRenderer {
         PoseStack stack = event.getPoseStack();
         //RenderSystem.disableDepthTest();
 
-        //Set up the predicate to get the closest player from 0,0,0 and within 128 blocks, return if no players
-        Predicate<Entity> predicate = (i) -> (i instanceof Player);
-        Player player1 = Minecraft.getInstance().level.getNearestPlayer(0, 0, 0, 256, predicate);
-        if(player1==null){
-            try{
-                Vec3 lastPos = entityPos.get(entityPos.size()-1);
-                player1 = Minecraft.getInstance().level.getNearestPlayer(lastPos.x, lastPos.y, lastPos.z, 256, predicate);
-            } catch (Exception ignored) {
-
-            }
-        }
-
         //???
         RenderSystem.depthMask(true);
         VertexConsumer vertexConsumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines());
@@ -68,6 +53,8 @@ public class FlightPathRenderer {
         double s1 = camvec.y;
         double s2 = camvec.z;
 
+        size = entityPos.size();
+
         //Render the line(s)
         for(int i=0; i<=entityPos.size()-2; i++){
             Vec3 start = entityPos.get(i);
@@ -76,8 +63,8 @@ public class FlightPathRenderer {
             var buffer = tesselator.getBuilder();
             VertexBuffer vertexBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
             buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
-            buffer.vertex(start.x, start.y, start.z).color(1f, 1f, 1f, 1f).endVertex();
-            buffer.vertex(end.x, end.y, end.z).color(1f, 1f, 1f, 1f).endVertex();
+            buffer.vertex(start.x, start.y, start.z).color(1f, 0, 1f, 1f).endVertex();
+            buffer.vertex(end.x, end.y, end.z).color(1f, 0, 1f, 1f).endVertex();
             vertexBuffer.bind();
             vertexBuffer.upload(buffer.end());
 
@@ -88,7 +75,6 @@ public class FlightPathRenderer {
             VertexBuffer.unbind();
             stack.popPose();
         }
-        tick++;
         //RenderSystem.enableDepthTest();
     }
 }

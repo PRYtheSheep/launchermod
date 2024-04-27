@@ -69,7 +69,6 @@ public class BlockOutlineRenderer {
             player1 = Minecraft.getInstance().level.getNearestPlayer(targetPos.x, targetPos.y, targetPos.z, 128, predicate);
         }
         if(player1==null) return;
-        System.out.println("running");
 
 
         //Previous pos stores the previous posiiton of the player

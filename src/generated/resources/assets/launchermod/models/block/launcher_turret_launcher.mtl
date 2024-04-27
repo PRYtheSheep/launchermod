@@ -1,12 +1,12 @@
-# Blender 4.0.2 MTL File: 'None'
+# Blender 4.1.1 MTL File: 'None'
 # www.blender.org
 
-newmtl m_5f6dbcb9-f7c8-62ab-c67c-59cb8533a9a6
+newmtl m_0cf0e49a-57f7-b0e6-3d7a-a200e499bbb1
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.450000
+Ni 1.500000
 d 1.000000
 illum 1
 map_Kd launchermod:block/launcher_turret_launcher

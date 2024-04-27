@@ -1,14 +1,19 @@
 package com.PRYtheSheep.launchermod.ModItem.Projectile.Shell;
 
 import com.PRYtheSheep.launchermod.LauncherMod;
+import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
 import com.PRYtheSheep.launchermod.Networking.Channel;
 import com.PRYtheSheep.launchermod.Networking.LauncherPayloadS2C;
 import com.PRYtheSheep.launchermod.Networking.TracerPayloadS2C;
 import net.minecraft.core.SectionPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -16,6 +21,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
+
+import java.util.function.Predicate;
 
 import static com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherRenderer.FlightPathRenderer.entityPos;
 
@@ -53,9 +60,10 @@ public class ShellItemEntity extends AbstractArrow{
                 this.getX(),
                 this.getY(),
                 this.getZ(),
-                3F,
+                6F,
                 Level.ExplosionInteraction.TNT
         );
+        this.owner.canFire = true;
         this.kill();
     }
 
@@ -74,9 +82,10 @@ public class ShellItemEntity extends AbstractArrow{
                 this.getX(),
                 this.getY(),
                 this.getZ(),
-                3F,
+                6F,
                 Level.ExplosionInteraction.TNT
         );
+        this.owner.canFire = true;
         this.kill();
     }
 
@@ -91,6 +100,7 @@ public class ShellItemEntity extends AbstractArrow{
     public float launchVelocityZ;
     int tick = 0;
     private boolean markedForRemoval = false;
+    public LauncherBE owner = null;
 
     @Override
     public void tick() {
@@ -111,16 +121,33 @@ public class ShellItemEntity extends AbstractArrow{
         //END OF TESTING
 
         this.setDeltaMovement(new Vec3(launchVelocityX, launchVelocityY + tick * -0.05F, launchVelocityZ));
-        if(tick>=200) {
+        if(tick>=2000) {
+            //temporary method for now
+            entityPos.clear();
+            markedForRemoval = true;
+            this.owner.canFire = true;
             this.kill();
             return;
         }
 
         //TESTING
-        if(tick > 0 && !markedForRemoval){
+        if(!markedForRemoval){
             //Send a payload to the client side
+            //Payload contains the current position for the renderer to trace the flight path
             Channel.sendToServer(new TracerPayloadS2C(new Vec3(this.getX(), this.getY(), this.getZ())));
         }
+
+        ServerPlayer player;
+        Predicate<Entity> predicate = (i) -> (i instanceof ServerPlayer);
+        try{
+            player = ((ServerLevel) this.level()).getPlayers(predicate, 1).get(0);
+        } catch (Exception e) {
+            return;
+        }
+        player.displayClientMessage(Component.literal(
+                (int) this.position().x + " " +
+                        (int) this.position().y + " " +
+                        (int) this.position().z), true);
         //END OF TESTING
     }
 }

@@ -78,6 +78,7 @@ public class LauncherBE_EventHandler {
             //Text block is NULL, set the target blockPos to null and return
             ((LauncherBE) be).targetPos = null;
             ((LauncherBE) be).elevation = 0;
+            ((LauncherBE) be).canFire = true;
             player.displayClientMessage(Component.literal("Launcher target set to NULL"), true);
             return;
         }

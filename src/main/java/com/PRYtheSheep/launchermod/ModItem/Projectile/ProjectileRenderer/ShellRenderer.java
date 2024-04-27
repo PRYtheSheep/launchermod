@@ -1,7 +1,5 @@
-package com.PRYtheSheep.launchermod.ModBlock.Renderer;
+package com.PRYtheSheep.launchermod.ModItem.Projectile.ProjectileRenderer;
 
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileItemEntity;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileModel;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity;
 import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellModel;
 import com.mojang.blaze3d.vertex.PoseStack;
