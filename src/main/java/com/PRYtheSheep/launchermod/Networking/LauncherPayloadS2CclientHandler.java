@@ -26,7 +26,6 @@ public class LauncherPayloadS2CclientHandler {
                         ((LauncherBE) be).targetPos = data.targetPos();
                         ((LauncherBE) be).elevation = data.elevation();
                         BlockOutlineRenderer.targetPos = data.targetPos();
-                        BlockOutlineRenderer.currentPos = data.pos();
                     }
                 })
                 .exceptionally(e -> {

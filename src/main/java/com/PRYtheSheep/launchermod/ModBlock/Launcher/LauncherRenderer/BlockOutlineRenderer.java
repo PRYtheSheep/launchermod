@@ -1,9 +1,9 @@
 package com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherRenderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -26,12 +26,7 @@ import static com.PRYtheSheep.launchermod.LauncherMod.MODID;
 @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
 public class BlockOutlineRenderer {
 
-    static double previousX;
-    static double previousY;
-    static double previousZ;
-    public static ArrayList<Vec3> previousPos = new ArrayList<>();
     public static Vec3 targetPos = null;
-    public static BlockPos currentPos = null;
 
     private static int renderCount = 0;
     private static double scale = 1;
@@ -58,64 +53,67 @@ public class BlockOutlineRenderer {
             renderCount = 0;
         }
 
-        //Rendering the bounding box now
+        //Prepare the stack
         PoseStack stack = event.getPoseStack();
         //RenderSystem.disableDepthTest();
 
-        //Set up the predicate to get the closest player from 0,0,0 and within 128 blocks, return if no players
-        Predicate<Entity> predicate = (i) -> (i instanceof Player);
-        Player player1 = Minecraft.getInstance().level.getNearestPlayer(currentPos.getX(), currentPos.getY(), currentPos.getZ(), 128, predicate);
-        if(player1==null){
-            player1 = Minecraft.getInstance().level.getNearestPlayer(targetPos.x, targetPos.y, targetPos.z, 128, predicate);
-        }
-        if(player1==null) return;
-
-
-        //Previous pos stores the previous posiiton of the player
-        //When the world is first loaded, previous pos is empty, so use a try catch statement to get the previous pos
-        //or enter in starting position of 0,0,0
-        try{
-            previousPos.get(0);
-        }
-        catch(Exception e){
-            previousPos.add( previousPos.size(), new Vec3(0 ,0 ,0));
-        }
-
-        //Get the bounding box of the player
-        //AABB aabb = player1.getBoundingBox().move(-player1.getX(), -player1.getY(), -player1.getZ());
-        AABB aabb = new AABB(new BlockPos(
-                Math.round((float)targetPos.x - 0.5F),
-                Math.round((float)targetPos.y),
-                Math.round((float)targetPos.z - 0.5F))
-                ).move(-player1.getX(), -player1.getY(), -player1.getZ()).inflate(scale);
-
         //???
         RenderSystem.depthMask(true);
-        VertexConsumer vertexConsumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines());
 
         //Rendering logic below
         //I got to figure out this shit
-        double px = Mth.lerp(event.getPartialTick(), previousPos.get(0).x, player1.getX());
-        double py = Mth.lerp(event.getPartialTick(), previousPos.get(0).y, player1.getY());
-        double pz = Mth.lerp(event.getPartialTick(), previousPos.get(0).z, player1.getZ());
-
-        previousX = player1.getX();
-        previousY = player1.getY();
-        previousZ = player1.getZ();
-        previousPos.set(0, new Vec3((float) previousX, (float) previousY, (float) previousZ));
         Vec3 camvec = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         double s0 = camvec.x;
         double s1 = camvec.y;
         double s2 = camvec.z;
 
+        //Get the coordinates to render the lines
+        Vec3[] coordinateList = getBoxCoordinates(targetPos);
+
+        //Render the lines
+        //Set up
+        var tesselator = Tesselator.getInstance();
+        var buffer = tesselator.getBuilder();
+        VertexBuffer vertexBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
+        buffer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+
+        //TESTING
+        Vec3 start = coordinateList[0];
+        Vec3 end = coordinateList[1];
+        buffer.vertex(start.x, start.y, start.z).color(0, 1f, 1f, 1f).endVertex();
+        buffer.vertex(end.x, end.y, end.z).color(0, 1f, 1f, 1f).endVertex();
+        vertexBuffer.bind();
+        vertexBuffer.upload(buffer.end());
+        //TESTING
+
         stack.pushPose();
-        stack.translate(px - s0, py - s1, pz - s2);
-
-        //Render the box
-        LevelRenderer.renderLineBox(stack, vertexConsumer, aabb, 0, 1, 1, 1);
-
+        stack.translate( - s0,  - s1, - s2);
+        var shader = GameRenderer.getPositionColorShader();
+        vertexBuffer.drawWithShader(stack.last().pose(), event.getProjectionMatrix(), shader);
+        VertexBuffer.unbind();
         stack.popPose();
-
-        //RenderSystem.enableDepthTest();
     }
+
+    private static Vec3[] getBoxCoordinates(Vec3 targetPos){
+        targetPos.add(-0.5F, 0.5F, -0.5F);
+
+        Vec3 point0 = new Vec3(targetPos.x, targetPos.y, targetPos.z);
+
+        targetPos.add(1,0,0);
+        Vec3 point1 = new Vec3(targetPos.x, targetPos.y, targetPos.z);
+
+        targetPos.add(0,0,1);
+        Vec3 point2 = new Vec3(targetPos.x, targetPos.y, targetPos.z);
+
+        targetPos.add(-1,0,0);
+        Vec3 point3 = new Vec3(targetPos.x, targetPos.y, targetPos.z);
+
+        return new Vec3[]{
+                point0,
+                point1,
+                point2,
+                point3
+        };
+    }
+
 }

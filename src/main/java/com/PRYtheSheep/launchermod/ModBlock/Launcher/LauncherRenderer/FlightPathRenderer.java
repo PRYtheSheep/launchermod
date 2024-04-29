@@ -27,7 +27,6 @@ import static com.PRYtheSheep.launchermod.LauncherMod.MODID;
 public class FlightPathRenderer {
 
     public static ArrayList<Vec3> entityPos = new ArrayList<>();
-    public static int size = 0;
 
     @SubscribeEvent
     public static void onWorldRenderLast(RenderLevelStageEvent event){
@@ -38,13 +37,12 @@ public class FlightPathRenderer {
         //At least 2 positions in entityPos
         if(entityPos.size() < 1) return;
 
-        //Rendering the bounding box now
+        //Prepare the stack
         PoseStack stack = event.getPoseStack();
         //RenderSystem.disableDepthTest();
 
         //???
         RenderSystem.depthMask(true);
-        VertexConsumer vertexConsumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines());
 
         //Rendering logic below
         //I got to figure out this shit
@@ -53,7 +51,6 @@ public class FlightPathRenderer {
         double s1 = camvec.y;
         double s2 = camvec.z;
 
-        size = entityPos.size();
 
         //Render the line(s)
         for(int i=0; i<=entityPos.size()-2; i++){
