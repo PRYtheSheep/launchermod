@@ -132,9 +132,11 @@ public class ShellItemEntity extends AbstractArrow{
 
         //TESTING
         if(!markedForRemoval){
+            ServerPlayer serverPlayer = this.getServer().getPlayerList().getPlayers().get(0);
+
             //Send a payload to the client side
             //Payload contains the current position for the renderer to trace the flight path
-            Channel.sendToServer(new TracerPayloadS2C(new Vec3(this.getX(), this.getY(), this.getZ())));
+            Channel.sendToPlayer(new TracerPayloadS2C(new Vec3(this.getX(), this.getY(), this.getZ())), serverPlayer);
         }
 
         ServerPlayer player;

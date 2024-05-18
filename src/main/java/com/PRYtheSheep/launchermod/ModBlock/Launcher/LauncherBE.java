@@ -10,12 +10,14 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ticket.ChunkTicketManager;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.*;
 import static com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher.FACING;
@@ -79,8 +81,9 @@ public class LauncherBE extends BlockEntity{
         }
 
         if(tick>=40){
+            ServerPlayer serverPlayer = this.getLevel().getServer().getPlayerList().getPlayers().get(0);
             //Send a payload to the client side to update client side launchCount, targetPos and elevation
-            Channel.sendToServer(new LauncherPayloadS2C(launchCount, this.getBlockPos(), targetPos, elevation));
+            Channel.sendToPlayer(new LauncherPayloadS2C(launchCount, this.getBlockPos(), targetPos, elevation), serverPlayer);
         }
     }
 

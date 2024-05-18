@@ -13,5 +13,4 @@ public class Channel {
     public static <MSG extends CustomPacketPayload> void sendToPlayer(MSG message, ServerPlayer player) {
         PacketDistributor.PLAYER.with(player).send(message);
     }
-
 }

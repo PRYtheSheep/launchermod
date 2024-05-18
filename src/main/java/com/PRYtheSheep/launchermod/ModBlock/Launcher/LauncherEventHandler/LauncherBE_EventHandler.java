@@ -6,13 +6,19 @@ import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherPartIndex;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.ServerChatEvent;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,8 +26,31 @@ import static com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher.PART;
 
 @Mod.EventBusSubscriber(modid = LauncherMod.MODID)
 public class LauncherBE_EventHandler {
+
+    public static Parrot parrot = null;
+
     @SubscribeEvent
-    public static void onChatMessage(ServerChatEvent event) {
+    public static void startSpectate(ServerChatEvent event) {
+        if(event.getPlayer().level().isClientSide) return;
+        if(event.getRawText().matches("start spectate")){
+            ServerPlayer serverPlayer = event.getPlayer();
+            List<Entity> entityList = serverPlayer.level().getEntities(serverPlayer, new AABB(0,0,0,10,10,10));
+            serverPlayer.setCamera(entityList.get(0));
+            parrot = (Parrot) entityList.get(0);
+        }
+    }
+
+    @SubscribeEvent
+    public static void endSpectate(ServerChatEvent event) {
+        if(event.getPlayer().level().isClientSide) return;
+        if(event.getRawText().matches("end spectate")){
+            ServerPlayer serverPlayer = event.getPlayer();
+            serverPlayer.setCamera(null);
+        }
+    }
+
+    @SubscribeEvent
+    public static void setLauncher(ServerChatEvent event) {
         if(event.getPlayer().level().isClientSide) return;
         String text = event.getRawText();
         parseText(text, event.getPlayer().level(), event.getPlayer());
@@ -32,6 +61,8 @@ public class LauncherBE_EventHandler {
         //Split the text by " ", then do a series of checks to determine the command
         //e.g. SET LAUNCHER AT 11 -60 4 TO 15 -61 24 WITH ANGLE 15
         String[] textBlocks = text.split(delimiter);
+
+        if(textBlocks.length < 3) return;
 
         //Check if the first 2 blocks joins to SET LAUNCHER @
         String toCheck = textBlocks[0] + delimiter + textBlocks[1] + delimiter + textBlocks[2];
