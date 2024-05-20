@@ -1,11 +1,7 @@
 package com.PRYtheSheep.launchermod.Networking;
 
-import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
-import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherRenderer.BlockOutlineRenderer;
-import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherRenderer.FlightPathRenderer;
-import net.minecraft.client.Minecraft;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherRenderer.FlightPathRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class TracerS2CclientHandler {

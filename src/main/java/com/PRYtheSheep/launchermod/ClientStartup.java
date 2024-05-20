@@ -1,11 +1,14 @@
 package com.PRYtheSheep.launchermod;
 
-import com.PRYtheSheep.launchermod.ModBlock.BlockEntityRenderer.LauncherBER;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.ProjectileRenderer.ShellRenderer;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellModel;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.BlockEntityRenderer.LauncherBER;
+import com.PRYtheSheep.launchermod.Entities.Model.DroneModel;
+import com.PRYtheSheep.launchermod.Entities.Model.DroneRenderer;
+import com.PRYtheSheep.launchermod.Entities.Model.ModelLayer;
+import com.PRYtheSheep.launchermod.Items.Projectile.ProjectileRenderer.ShellRenderer;
+import com.PRYtheSheep.launchermod.Items.Projectile.Shell.ShellModel;
 import com.PRYtheSheep.launchermod.Networking.*;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.ProjectileRenderer.MissileRenderer;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileModel;
+import com.PRYtheSheep.launchermod.Items.Projectile.ProjectileRenderer.MissileRenderer;
+import com.PRYtheSheep.launchermod.Items.Projectile.Missile.MissileModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -17,14 +20,13 @@ import net.neoforged.jarjar.nio.util.Lazy;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import org.lwjgl.glfw.GLFW;
 
 import static com.PRYtheSheep.launchermod.LauncherMod.*;
-import static com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE.LAUNCHER_TICKET_CONTROLLER;
-import static com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity.SHELL_TICKET_CONTROLLER;
+import static com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherBE.LAUNCHER_TICKET_CONTROLLER;
+import static com.PRYtheSheep.launchermod.Items.Projectile.Shell.ShellItemEntity.SHELL_TICKET_CONTROLLER;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientStartup {
@@ -33,6 +35,7 @@ public class ClientStartup {
     public static void doSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(MISSILE_ITEM_ENTITY.get(), MissileRenderer::new);
         EntityRenderers.register(SHELL_ITEM_ENTITY.get(), ShellRenderer::new);
+        EntityRenderers.register(DRONE_ENTITY.get(), DroneRenderer::new);
     }
 
     @SubscribeEvent
@@ -44,6 +47,7 @@ public class ClientStartup {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MissileModel.LAYER_LOCATION, MissileModel::createBodyLayer);
         event.registerLayerDefinition(ShellModel.LAYER_LOCATION, ShellModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayer.DRONE_LAYER_LOCATION, DroneModel::createBodyLayer);
     }
 
     @SubscribeEvent

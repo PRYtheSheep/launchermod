@@ -1,7 +1,7 @@
 package com.PRYtheSheep.launchermod.Networking;
 
-import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
-import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherRenderer.BlockOutlineRenderer;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherBE;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherRenderer.BlockOutlineRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;

@@ -1,15 +1,15 @@
 package com.PRYtheSheep.launchermod;
 
-import com.PRYtheSheep.launchermod.ModBlock.Launcher.Launcher;
-import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherBE;
-import com.PRYtheSheep.launchermod.ModBlock.Launcher.LauncherEventHandler.TestEventHandling;
-import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretBarrel;
-import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretBreach;
-import com.PRYtheSheep.launchermod.ModBlock.LauncherTurret.LauncherTurretLauncher;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileItem;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Missile.MissileItemEntity;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItem;
-import com.PRYtheSheep.launchermod.ModItem.Projectile.Shell.ShellItemEntity;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.Launcher;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherBE;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretBarrel;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretBreach;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretLauncher;
+import com.PRYtheSheep.launchermod.Entities.Drone.DroneEntity;
+import com.PRYtheSheep.launchermod.Items.Projectile.Missile.MissileItem;
+import com.PRYtheSheep.launchermod.Items.Projectile.Missile.MissileItemEntity;
+import com.PRYtheSheep.launchermod.Items.Projectile.Shell.ShellItem;
+import com.PRYtheSheep.launchermod.Items.Projectile.Shell.ShellItemEntity;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -65,8 +65,8 @@ public class LauncherMod
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
     // Creates a new Block with the id "launchermod:example_block", combining the namespace and path
     public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-    // Create a Deferred Register to hold Item Entites
-    public static final DeferredRegister<EntityType<?>> ITEM_ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
+    // Create a Deferred Register to hold Entites
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
 
     public static final DeferredBlock<Launcher> LAUNCHER = BLOCKS.register("launcher", ()->
             new Launcher(BlockBehaviour.Properties.of()
@@ -111,7 +111,7 @@ public class LauncherMod
     // Creates a new missile item with the id "launchermod:missile"
     public static final DeferredItem<Item> MISSILE_ITEM = ITEMS.registerItem("missile", MissileItem::new, new Item.Properties());
     // Register Missile Item entity here
-    public static final Supplier<EntityType<MissileItemEntity>> MISSILE_ITEM_ENTITY = ITEM_ENTITIES.register("missile",
+    public static final Supplier<EntityType<MissileItemEntity>> MISSILE_ITEM_ENTITY = ENTITIES.register("missile",
             () -> EntityType.Builder.of(MissileItemEntity::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(4)
@@ -122,12 +122,18 @@ public class LauncherMod
     public static final DeferredItem<Item> SHELL_ITEM = ITEMS.registerItem("shell", ShellItem::new, new Item.Properties());
 
     // Register Shell Item entity here
-    public static final Supplier<EntityType<ShellItemEntity>> SHELL_ITEM_ENTITY = ITEM_ENTITIES.register("shell",
+    public static final Supplier<EntityType<ShellItemEntity>> SHELL_ITEM_ENTITY = ENTITIES.register("shell",
             () -> EntityType.Builder.of(ShellItemEntity::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(4)
                     .updateInterval(1)
                     .build("shell"));
+
+    // Register the Drone entity here
+    public static final Supplier<EntityType<DroneEntity>> DRONE_ENTITY = ENTITIES.register("drone",
+            () -> EntityType.Builder.of(DroneEntity::new, MobCategory.CREATURE)
+                    .sized(3,0.4F)
+                    .build("drone"));
 
     // Creates a creative tab with the id "launchermod:example_tab" for the example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
@@ -156,7 +162,7 @@ public class LauncherMod
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
         // Register the Deferred register to the mod event bus so Item Entities get registered
-        ITEM_ENTITIES.register(modEventBus);
+        ENTITIES.register(modEventBus);
 
 
         // Register ourselves for server and other game events we are interested in.
