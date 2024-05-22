@@ -45,7 +45,6 @@ public class ShellItemEntity extends AbstractArrow{
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
-
         //temporary method for now
         entityPos.clear();
         markedForRemoval = true;
@@ -102,6 +101,7 @@ public class ShellItemEntity extends AbstractArrow{
 
     @Override
     public void tick() {
+
         tick++;
         if(this.level().isClientSide) return;
         super.tick();

@@ -1,5 +1,6 @@
 package com.PRYtheSheep.launchermod.Blocks.Launcher;
 
+import com.PRYtheSheep.launchermod.Items.Projectile.Drone.DroneEntity;
 import com.PRYtheSheep.launchermod.LauncherMod;
 import com.PRYtheSheep.launchermod.Items.Projectile.Shell.ShellItemEntity;
 import com.PRYtheSheep.launchermod.Networking.Channel;
@@ -20,6 +21,8 @@ import static com.PRYtheSheep.launchermod.LauncherMod.*;
 import static com.PRYtheSheep.launchermod.Blocks.Launcher.Launcher.FACING;
 
 public class LauncherBE extends BlockEntity{
+    public DroneEntity droneEntity;
+
     public LauncherBE(BlockPos pPos, BlockState pBlockState) {
         super(LAUNCHER_BE.get(), pPos, pBlockState);
     }

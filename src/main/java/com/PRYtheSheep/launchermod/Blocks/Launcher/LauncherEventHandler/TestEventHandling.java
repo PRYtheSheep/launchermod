@@ -8,7 +8,7 @@ import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.TickEvent;
 
 import static com.PRYtheSheep.launchermod.ClientStartup.*;
-import static com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherEventHandler.LauncherBE_EventHandler.parrot;
+import static com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherEventHandler.LauncherBE_EventHandler.arrow;
 
 @Mod.EventBusSubscriber(modid = LauncherMod.MODID, value = Dist.CLIENT)
 public class TestEventHandling {
@@ -17,37 +17,31 @@ public class TestEventHandling {
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) { // Only call code once as the tick event is called twice every tick
-            if(parrot != null){
+            if(arrow != null){
                 if (KEY_LEFT_MAPPING.get().isDown()) {
                     // Execute logic when the left key is pressed
-                    isSpectating = true;
                     yaw--;
                 }
                 else if (KEY_RIGHT_MAPPING.get().isDown()) {
-                    // Execute logic when the left key is pressed
-                    isSpectating = true;
+                    // Execute logic when the right key is pressed
                     yaw++;
                 }
                 else if (KEY_UP_MAPPING.get().isDown()) {
-                    // Execute logic when the left key is pressed
-                    // Channel.sendToServer(new TestEventHandlingC2S(parrot.getUUID()));
-                    isSpectating = true;
+                    // Execute logic when the up key is pressed
                     pitch--;
                 }
                 else if (KEY_DOWN_MAPPING.get().isDown()) {
-                    // Execute logic when the left key is pressed
-                    // Channel.sendToServer(new TestEventHandlingC2S(parrot.getUUID()));
-                    isSpectating = true;
+                    // Execute logic when the down key is pressed
                     pitch++;
                 }
             }
         }
     }
 
-    private static boolean isSpectating = false;
-    private static int pitch;
-    private static int yaw;
-    private static int roll;
+    public static boolean isSpectating = false;
+    public static int pitch;
+    public static int yaw;
+    public static int roll;
 
     @SubscribeEvent
     public static void camera(ViewportEvent.ComputeCameraAngles event) {

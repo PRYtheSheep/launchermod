@@ -5,7 +5,8 @@ import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherBE;
 import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretBarrel;
 import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretBreach;
 import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretLauncher;
-import com.PRYtheSheep.launchermod.Entities.Drone.DroneEntity;
+import com.PRYtheSheep.launchermod.Items.Projectile.Drone.DroneEntity;
+import com.PRYtheSheep.launchermod.Items.Projectile.Drone.DroneItem;
 import com.PRYtheSheep.launchermod.Items.Projectile.Missile.MissileItem;
 import com.PRYtheSheep.launchermod.Items.Projectile.Missile.MissileItemEntity;
 import com.PRYtheSheep.launchermod.Items.Projectile.Shell.ShellItem;
@@ -112,8 +113,8 @@ public class LauncherMod
     public static final DeferredItem<Item> MISSILE_ITEM = ITEMS.registerItem("missile", MissileItem::new, new Item.Properties());
     // Register Missile Item entity here
     public static final Supplier<EntityType<MissileItemEntity>> MISSILE_ITEM_ENTITY = ENTITIES.register("missile",
-            () -> EntityType.Builder.of(MissileItemEntity::new, MobCategory.MISC)
-                    .sized(0.5F, 0.5F)
+            () -> EntityType.Builder.of(MissileItemEntity::new, MobCategory.CREATURE)
+                    .sized(5F, 0.5F)
                     .clientTrackingRange(4)
                     .updateInterval(1)
                     .build("missile"));
@@ -129,10 +130,15 @@ public class LauncherMod
                     .updateInterval(1)
                     .build("shell"));
 
-    // Register the Drone entity here
+    // Register a new shell item with the id "launchermod:shell"
+    public static final DeferredItem<Item> DRONE_ITEM = ITEMS.registerItem("drone", DroneItem::new, new Item.Properties());
+
+    // Register Shell Item entity here
     public static final Supplier<EntityType<DroneEntity>> DRONE_ENTITY = ENTITIES.register("drone",
-            () -> EntityType.Builder.of(DroneEntity::new, MobCategory.CREATURE)
-                    .sized(3,0.4F)
+            () -> EntityType.Builder.of(DroneEntity::new, MobCategory.MISC)
+                    .sized(3F, 0.1F)
+                    .clientTrackingRange(4)
+                    .updateInterval(1)
                     .build("drone"));
 
     // Creates a creative tab with the id "launchermod:example_tab" for the example item, that is placed after the combat tab

@@ -1,9 +1,8 @@
 package com.PRYtheSheep.launchermod;
 
 import com.PRYtheSheep.launchermod.Blocks.Launcher.BlockEntityRenderer.LauncherBER;
-import com.PRYtheSheep.launchermod.Entities.Model.DroneModel;
-import com.PRYtheSheep.launchermod.Entities.Model.DroneRenderer;
-import com.PRYtheSheep.launchermod.Entities.Model.ModelLayer;
+import com.PRYtheSheep.launchermod.Items.Projectile.Drone.DroneModel;
+import com.PRYtheSheep.launchermod.Items.Projectile.ProjectileRenderer.DroneRenderer;
 import com.PRYtheSheep.launchermod.Items.Projectile.ProjectileRenderer.ShellRenderer;
 import com.PRYtheSheep.launchermod.Items.Projectile.Shell.ShellModel;
 import com.PRYtheSheep.launchermod.Networking.*;
@@ -47,7 +46,7 @@ public class ClientStartup {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MissileModel.LAYER_LOCATION, MissileModel::createBodyLayer);
         event.registerLayerDefinition(ShellModel.LAYER_LOCATION, ShellModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayer.DRONE_LAYER_LOCATION, DroneModel::createBodyLayer);
+        event.registerLayerDefinition(DroneModel.LAYER_LOCATION, DroneModel::createBodyLayer);
     }
 
     @SubscribeEvent
