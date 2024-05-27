@@ -56,8 +56,8 @@ public class ClientStartup {
                 .client(LauncherPayloadS2CclientHandler.getInstance()::handleData));
         registrar.play(TracerPayloadS2C.ID, TracerPayloadS2C::new, handler -> handler
                 .client(TracerS2CclientHandler.getInstance()::handleData));
-        registrar.play(TestEventHandlingC2S.ID, TestEventHandlingC2S::new, handler -> handler
-                .server(TestEventHandlingC2SserverHandler.getInstance()::handleData));
+        registrar.play(DroneEntitySettingCameraPosS2C.ID, DroneEntitySettingCameraPosS2C::new, handler -> handler
+                .client(DroneEntitySettingCameraPosS2CserverHandler.getInstance()::handleData));
     }
 
     @SubscribeEvent

@@ -1,10 +1,12 @@
 package com.PRYtheSheep.launchermod.Items.Projectile.Drone;
 
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherEventHandler.TestEventHandling;
 import com.PRYtheSheep.launchermod.LauncherMod;
 import com.sun.jna.platform.win32.OaIdl;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -28,26 +30,43 @@ public class DroneEntity extends AbstractArrow {
         super(pEntityType, pOwner, pLevel, pPickupItemStack);
     }
 
-    private Vec3 vec3 = new Vec3(0.1,0,0);
-    private int tick = 0;
-    public float currentYaw = 0;
     public boolean arrivedAtTargetPos = true;
     public Vec3 targetPos;
+    public Vec3 cameraTargetPos;
 
     @Override
     public void tick() {
         super.tick();
-        //TEST
+
+        //Main logic
         if(arrivedAtTargetPos){
             flyCircle();
         }
         else{
+            //Calculate distance from drone to targetPos
+            //Drone is considered to be at targetPos if distance is less than 0.5 blocks
             double distance = targetPos.distanceTo(this.getEyePosition());
             if(distance < 0.5){
                 arrivedAtTargetPos = true;
             }
             else{
+                //Drone not at targetPos, fly towards it
                 flyTowardsTarget();
+            }
+        }
+
+        //Logic to set up the
+        if(!this.level().isClientSide){
+            if(cameraTargetPos == null){
+                TestEventHandling.yaw = getYawFromVector(this.getDeltaMovement());
+                TestEventHandling.pitch = 0;
+            }
+            else{
+                //Make the camera point towards targetPos
+                Vec3 resultant = cameraTargetPos.subtract(this.getEyePosition());
+                TestEventHandling.yaw = getYawFromVector(resultant);
+                TestEventHandling.pitch = getPitchFromVector(resultant);
+
             }
         }
     }
