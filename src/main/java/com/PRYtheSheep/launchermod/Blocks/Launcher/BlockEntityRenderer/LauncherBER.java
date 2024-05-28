@@ -37,6 +37,7 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
 
     @Override
     public void render(LauncherBE pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        int fps = Minecraft.getInstance().getFps();
         //TESTED ON 120 FPS
         BlockRenderDispatcher dispatcher = this.context.getBlockRenderDispatcher();
         Direction direction = pBlockEntity.getBlockState().getValue(FACING);
@@ -132,14 +133,14 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
         pPoseStack.rotateAround(Axis.YP.rotationDegrees(angle),0,0,0);
         pPoseStack.rotateAround(Axis.XP.rotationDegrees(pBlockEntity.elevation),0,0.75F,0.75F);
         if(flag==0 && renderLaunchCount< pBlockEntity.launchCount){
-            displacement = displacement + 0.1;
+            displacement = displacement + getDisplacement(fps);
             pPoseStack.translate(0,0,displacement);
         }
         else if(flag==1){
-            displacement = displacement - 0.02;
+            displacement = displacement - getDisplacement(fps) * 0.1;
             pPoseStack.translate(0,0,displacement);
         }
-        if(displacement>=0.9 && flag==0) flag = 1;
+        if(displacement>=1.2 && flag==0) flag = 1;
         if(displacement<=0 && flag==1){
             flag = 0;
             renderLaunchCount++;
@@ -197,6 +198,10 @@ public class LauncherBER implements BlockEntityRenderer<LauncherBE> {
         Vec3 crossVector = facingVector.cross(angleVector);
         if(crossVector.y > 0) return angleBetween2Vectors(facingVector, angleVector);
         else return -angleBetween2Vectors(facingVector, angleVector);
+    }
+
+    private float getDisplacement(int fps){
+        return 12 * ((float) 1 / fps);
     }
 
 }
