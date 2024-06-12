@@ -103,7 +103,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    implementation group: 'ai.djl', name: 'api', version: '0.27.0'
+    implementation 'ai.djl.pytorch:pytorch-model-zoo:0.27.0'
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

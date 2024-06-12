@@ -1,0 +1,5 @@
+[12Jun2024 15:12:19.559] [main/WARN] [ai.djl.repository.SimpleRepository/]: Simple repository pointing to a non-archive file.
+[12Jun2024 15:12:19.704] [main/WARN] [ai.djl.pytorch.jni.LibUtils/]: No matching cuda flavor for win-x86_64 found: cu065.
+[12Jun2024 15:12:20.083] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: PyTorch graph executor optimizer is enabled, this may impact your inference latency and throughput. See: https://docs.djl.ai/docs/development/inference_performance_optimization.html#graph-executor-optimization
+[12Jun2024 15:12:20.089] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: Number of inter-op threads is 8
+[12Jun2024 15:12:20.090] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: Number of intra-op threads is 8
