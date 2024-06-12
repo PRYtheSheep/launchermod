@@ -27,35 +27,39 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class testingDJL {
 
     public static void main(String[] args) throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
 
-        Pipeline pipeline = new Pipeline();
-        pipeline.add(new Resize(1152,648));
-        pipeline.add(new ToTensor());
+//        Pipeline pipeline = new Pipeline();
+//        pipeline.add(new Resize(1152,648));
+//        pipeline.add(new ToTensor());
+//
+//        String DETECTION_LABEL_0 = "oak";
+//        List<String> synset = new ArrayList<>(1);
+//        synset.add(DETECTION_LABEL_0);
+//
+//        Translator<Image, DetectedObjects> translator = YoloV8Translator.builder()
+//                .setPipeline(pipeline)
+//                .optSynset(synset)
+//                .build();
 
-        String DETECTION_LABEL_0 = "oak";
-        List<String> synset = new ArrayList<>(1);
-        synset.add(DETECTION_LABEL_0);
-
-        Translator<Image, DetectedObjects> translator = YoloV8Translator.builder()
-                .setPipeline(pipeline)
-                .optSynset(synset)
-                .build();
+        String modelPath = "C:\\Users\\user\\Desktop\\YoloV8\\runs\\detect\\train\\weights\\best.torchscript";
+        String labels = "birch,oak";
 
         Criteria<Image, DetectedObjects> criteria =
                 Criteria.builder()
                         .setTypes(Image.class, DetectedObjects.class)
-                        .optModelPath(Paths.get("C:\\Users\\user\\Desktop\\YoloV8\\runs\\detect\\train\\weights\\best.torchscript"))
+                        .optModelPath(Paths.get(modelPath))
                         .optArgument("width", 640)
                         .optArgument("height", 640)
                         .optArgument("resize", true)
                         .optArgument("toTensor", true)
                         .optArgument("applyRatio", true)
                         .optArgument("threshold", 0.7f)
-                        .optArgument("synset", "birch,oak")
+                        .optArgument("synset", labels)
                         // for performance optimization maxBox parameter can reduce number of
                         // considered boxes from 8400
                         .optArgument("maxBox", 1000)
@@ -67,9 +71,14 @@ public class testingDJL {
 
         Path imgPath = Paths.get("C:\\Users\\user\\Downloads\\Screenshot 2024-06-12 151128.png");
         BufferedImage img = ImageIO.read(imgPath.toFile());
-        Image input = ImageFactory.getInstance().fromImage(img);
+        Image input = ImageFactory.getInstance().fromImage(img).resize(1152, 648, false);
 
+        long start = System.nanoTime();
         DetectedObjects detectedObjects = predictor.predict(input);
+        long end = System.nanoTime();
+        long elasped = TimeUnit.NANOSECONDS.toMillis(end - start);
+        System.out.println("Inference time " + elasped + "ms");
+
         System.out.println(detectedObjects);
         List<BoundingBox> boxes = new ArrayList<>();
         List<String> names = new ArrayList<>();
