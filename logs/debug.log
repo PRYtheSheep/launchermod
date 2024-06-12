@@ -1,38 +1,38 @@
-[12Jun2024 15:12:15.450] [main/DEBUG] [ai.djl.repository.zoo.DefaultModelZoo/]: Scanning models in repo: class ai.djl.repository.SimpleRepository, file:/C:/Users/user/IdeaProjects/launchermod/src/main/java/com/example/best.torchscript
-[12Jun2024 15:12:15.513] [main/DEBUG] [ai.djl.repository.zoo.ModelZoo/]: Loading model with Criteria:
+[12Jun2024 16:13:10.347] [main/DEBUG] [ai.djl.repository.zoo.DefaultModelZoo/]: Scanning models in repo: class ai.djl.repository.SimpleRepository, file:/C:/Users/user/Desktop/YoloV8/runs/detect/train/weights/best.torchscript
+[12Jun2024 16:13:10.394] [main/DEBUG] [ai.djl.repository.zoo.ModelZoo/]: Loading model with Criteria:
 	Application: UNDEFINED
 	Input: interface ai.djl.modality.cv.Image
 	Output: class ai.djl.modality.cv.output.DetectedObjects
 	ModelZoo: ai.djl.localmodelzoo
 	Arguments: {"synset":"birch,oak","toTensor":true,"width":640,"resize":true,"applyRatio":true,"maxBox":1000,"threshold":0.7,"height":640}
 
-[12Jun2024 15:12:15.513] [main/DEBUG] [ai.djl.repository.zoo.ModelZoo/]: Searching model in specified model zoo: ai.djl.localmodelzoo
-[12Jun2024 15:12:15.517] [main/DEBUG] [ai.djl.engine.Engine/]: Registering EngineProvider: PyTorch
-[12Jun2024 15:12:15.518] [main/DEBUG] [ai.djl.engine.Engine/]: Found default engine: PyTorch
-[12Jun2024 15:12:19.559] [main/WARN] [ai.djl.repository.SimpleRepository/]: Simple repository pointing to a non-archive file.
-[12Jun2024 15:12:19.560] [main/DEBUG] [ai.djl.repository.zoo.ModelZoo/]: Checking ModelLoader: ai.djl.localmodelzoo:best.torchscript UNDEFINED [
+[12Jun2024 16:13:10.394] [main/DEBUG] [ai.djl.repository.zoo.ModelZoo/]: Searching model in specified model zoo: ai.djl.localmodelzoo
+[12Jun2024 16:13:10.394] [main/DEBUG] [ai.djl.engine.Engine/]: Registering EngineProvider: PyTorch
+[12Jun2024 16:13:10.394] [main/DEBUG] [ai.djl.engine.Engine/]: Found default engine: PyTorch
+[12Jun2024 16:13:14.458] [main/WARN] [ai.djl.repository.SimpleRepository/]: Simple repository pointing to a non-archive file.
+[12Jun2024 16:13:14.458] [main/DEBUG] [ai.djl.repository.zoo.ModelZoo/]: Checking ModelLoader: ai.djl.localmodelzoo:best.torchscript UNDEFINED [
 	ai.djl.localmodelzoo/best.torchscript/best.torchscript {}
 ]
-[12Jun2024 15:12:19.565] [main/DEBUG] [ai.djl.repository.MRL/]: Preparing artifact: file:/C:/Users/user/IdeaProjects/launchermod/src/main/java/com/example/best.torchscript, ai.djl.localmodelzoo/best.torchscript/best.torchscript {}
-[12Jun2024 15:12:19.566] [main/DEBUG] [ai.djl.repository.SimpleRepository/]: Skip prepare for local repository.
-[12Jun2024 15:12:19.583] [main/DEBUG] [ai.djl.util.cuda.CudaUtils/]: Found cudart: C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common\cudart64_65.dll
-[12Jun2024 15:12:19.704] [main/WARN] [ai.djl.pytorch.jni.LibUtils/]: No matching cuda flavor for win-x86_64 found: cu065.
-[12Jun2024 15:12:19.712] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\asmjit.dll
-[12Jun2024 15:12:19.715] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\c10.dll
-[12Jun2024 15:12:19.717] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\libiomp5md.dll
-[12Jun2024 15:12:19.719] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\libiompstubs5md.dll
-[12Jun2024 15:12:19.720] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\uv.dll
-[12Jun2024 15:12:19.722] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\fbgemm.dll
-[12Jun2024 15:12:19.725] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\torch_cpu.dll
-[12Jun2024 15:12:20.076] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\torch.dll
-[12Jun2024 15:12:20.078] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\0.27.0-djl_torch.dll
-[12Jun2024 15:12:20.083] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: PyTorch graph executor optimizer is enabled, this may impact your inference latency and throughput. See: https://docs.djl.ai/docs/development/inference_performance_optimization.html#graph-executor-optimization
-[12Jun2024 15:12:20.089] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: Number of inter-op threads is 8
-[12Jun2024 15:12:20.090] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: Number of intra-op threads is 8
-[12Jun2024 15:12:20.101] [main/TRACE] [ai.djl.util.ClassLoaderUtils/]: Directory not exists: C:\Users\user\IdeaProjects\launchermod\src\main\java\com\example\classes
-[12Jun2024 15:12:20.101] [main/DEBUG] [ai.djl.pytorch.jni.JniUtils/]: mapLocation: false
-[12Jun2024 15:12:20.101] [main/DEBUG] [ai.djl.pytorch.jni.JniUtils/]: extraFileKeys: []
-[12Jun2024 15:12:20.373] [main/TRACE] [ai.djl.modality.cv.ImageFactory/]: 
+[12Jun2024 16:13:14.458] [main/DEBUG] [ai.djl.repository.MRL/]: Preparing artifact: file:/C:/Users/user/Desktop/YoloV8/runs/detect/train/weights/best.torchscript, ai.djl.localmodelzoo/best.torchscript/best.torchscript {}
+[12Jun2024 16:13:14.458] [main/DEBUG] [ai.djl.repository.SimpleRepository/]: Skip prepare for local repository.
+[12Jun2024 16:13:14.489] [main/DEBUG] [ai.djl.util.cuda.CudaUtils/]: Found cudart: C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common\cudart64_65.dll
+[12Jun2024 16:13:14.599] [main/WARN] [ai.djl.pytorch.jni.LibUtils/]: No matching cuda flavor for win-x86_64 found: cu065.
+[12Jun2024 16:13:14.615] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\asmjit.dll
+[12Jun2024 16:13:14.615] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\c10.dll
+[12Jun2024 16:13:14.615] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\libiomp5md.dll
+[12Jun2024 16:13:14.615] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\libiompstubs5md.dll
+[12Jun2024 16:13:14.615] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\uv.dll
+[12Jun2024 16:13:14.615] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\fbgemm.dll
+[12Jun2024 16:13:14.630] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\torch_cpu.dll
+[12Jun2024 16:13:14.966] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\torch.dll
+[12Jun2024 16:13:14.966] [main/DEBUG] [ai.djl.pytorch.jni.LibUtils/]: Loading native library: C:\Users\user\.djl.ai\pytorch\2.1.1-cpu-win-x86_64\0.27.0-djl_torch.dll
+[12Jun2024 16:13:14.966] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: PyTorch graph executor optimizer is enabled, this may impact your inference latency and throughput. See: https://docs.djl.ai/docs/development/inference_performance_optimization.html#graph-executor-optimization
+[12Jun2024 16:13:14.966] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: Number of inter-op threads is 8
+[12Jun2024 16:13:14.966] [main/INFO] [ai.djl.pytorch.engine.PtEngine/]: Number of intra-op threads is 8
+[12Jun2024 16:13:14.982] [main/TRACE] [ai.djl.util.ClassLoaderUtils/]: Directory not exists: C:\Users\user\Desktop\YoloV8\runs\detect\train\weights\classes
+[12Jun2024 16:13:14.982] [main/DEBUG] [ai.djl.pytorch.jni.JniUtils/]: mapLocation: false
+[12Jun2024 16:13:14.982] [main/DEBUG] [ai.djl.pytorch.jni.JniUtils/]: extraFileKeys: []
+[12Jun2024 16:13:15.270] [main/TRACE] [ai.djl.modality.cv.ImageFactory/]: 
 java.lang.ClassNotFoundException: ai.djl.opencv.OpenCVImageFactory
 	at jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641) ~[?:?]
 	at jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188) ~[?:?]
@@ -42,5 +42,5 @@ java.lang.ClassNotFoundException: ai.djl.opencv.OpenCVImageFactory
 	at ai.djl.modality.cv.ImageFactory.newInstance(ImageFactory.java:51) ~[api-0.27.0.jar:?]
 	at ai.djl.modality.cv.ImageFactory.<clinit>(ImageFactory.java:41) ~[api-0.27.0.jar:?]
 	at com.DJL.testingDJL.main(testingDJL.java:70) ~[main/:?]
-[12Jun2024 15:12:20.473] [main/TRACE] [ai.djl.inference.Predictor/]: Predictor input data: [ND: (1, 3, 640, 640) cpu() float32
+[12Jun2024 16:13:15.364] [main/TRACE] [ai.djl.inference.Predictor/]: Predictor input data: [ND: (1, 3, 640, 640) cpu() float32
 [ Exceed max print size ]]

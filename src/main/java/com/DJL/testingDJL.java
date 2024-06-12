@@ -48,7 +48,7 @@ public class testingDJL {
         Criteria<Image, DetectedObjects> criteria =
                 Criteria.builder()
                         .setTypes(Image.class, DetectedObjects.class)
-                        .optModelPath(Paths.get("C:\\Users\\user\\IdeaProjects\\launchermod\\src\\main\\java\\com\\example\\best.torchscript"))
+                        .optModelPath(Paths.get("C:\\Users\\user\\Desktop\\YoloV8\\runs\\detect\\train\\weights\\best.torchscript"))
                         .optArgument("width", 640)
                         .optArgument("height", 640)
                         .optArgument("resize", true)
@@ -84,6 +84,7 @@ public class testingDJL {
         }
         DetectedObjects converted = new DetectedObjects(names, prob, boxes);
         saveBoundingBoxImage(input, converted);
+        System.out.println("Image saved at C:\\Users\\user\\Desktop\\detected.png");
     }
 
     private static void saveBoundingBoxImage(Image img, DetectedObjects detection) throws IOException {
