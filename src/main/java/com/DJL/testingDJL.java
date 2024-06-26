@@ -1,6 +1,8 @@
 package com.DJL;
 
+import ai.djl.Device;
 import ai.djl.MalformedModelException;
+import ai.djl.engine.Engine;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
@@ -46,7 +48,7 @@ public class testingDJL {
 //                .optSynset(synset)
 //                .build();
 
-        String modelPath = "C:\\Users\\user\\Desktop\\YoloV8\\runs\\detect\\train\\weights\\best.torchscript";
+        String modelPath = "C:\\Users\\Dreamcore\\OneDrive\\Desktop\\YoloV8\\runs\\detect\\train\\weights\\best.torchscript";
         String labels = "birch,oak";
 
         Criteria<Image, DetectedObjects> criteria =
@@ -69,7 +71,7 @@ public class testingDJL {
         ZooModel<Image, DetectedObjects> model = criteria.loadModel();
         Predictor<Image, DetectedObjects> predictor = model.newPredictor();
 
-        Path imgPath = Paths.get("C:\\Users\\user\\Downloads\\Screenshot 2024-06-12 151128.png");
+        Path imgPath = Paths.get("C:\\Users\\Dreamcore\\Downloads\\maxresdefault.jpg");
         BufferedImage img = ImageIO.read(imgPath.toFile());
         Image input = ImageFactory.getInstance().fromImage(img).resize(1152, 648, false);
 
@@ -94,14 +96,14 @@ public class testingDJL {
         DetectedObjects converted = new DetectedObjects(names, prob, boxes);
         saveBoundingBoxImage(input, converted);
         System.out.println("Image saved at C:\\Users\\user\\Desktop\\detected.png");
+
+        System.out.println(Engine.getInstance().getGpuCount());
     }
 
     private static void saveBoundingBoxImage(Image img, DetectedObjects detection) throws IOException {
-        Path outputDir = Paths.get("C:\\Users\\user\\Desktop");
+        Path outputDir = Paths.get("C:\\Users\\Dreamcore\\OneDrive\\Desktop");
         Files.createDirectories(outputDir);
-
         img.drawBoundingBoxes(detection);
-
         Path imagePath = outputDir.resolve("detected.png");
         // OpenJDK can't save jpg with alpha channel
         img.save(Files.newOutputStream(imagePath), "png");

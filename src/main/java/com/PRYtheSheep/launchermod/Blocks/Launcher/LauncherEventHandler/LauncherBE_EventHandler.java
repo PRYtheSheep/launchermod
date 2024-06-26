@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -76,7 +76,7 @@ public class LauncherBE_EventHandler {
         BlockEntity be = level.getBlockEntity(blockPos);
 
         //Return error message if the block entity is not a LauncherBE and not LauncherPartIndex.P14
-        if(!(be instanceof LauncherBE) && be.getBlockState().getValue(PART) != LauncherPartIndex.P14){
+        if(!(be instanceof LauncherBE) || be.getBlockState().getValue(PART) != LauncherPartIndex.P14){
             player.displayClientMessage(Component.literal("Invalid launcher coordinates"), true);
         }
 
@@ -206,29 +206,6 @@ public class LauncherBE_EventHandler {
                     Integer.parseInt(textBlocks[11])+0.5);
             droneEntity.targetPos = targetPos;
         }
-
-        if(textBlocks.length < 13) return;
-
-        //Check if the next 3 blocks joins to SET DRONE TARGET TO X Y Z
-        toCheck = textBlocks[6] + delimiter
-                + textBlocks[7] + delimiter
-                + textBlocks[8] + delimiter
-                + textBlocks[9] + delimiter
-                + textBlocks[10] + delimiter
-                + textBlocks[11] + delimiter
-                + textBlocks[12];
-        patternString = "SET DRONE TARGET TO -?\\d+ -?\\d+ -?\\d+";
-        pattern = Pattern.compile(patternString);
-        matcher = pattern.matcher(toCheck);
-
-        //Return if it does not match
-        if(!matcher.matches()) return;
-        Vec3 targetPos = new Vec3(
-                Integer.parseInt(textBlocks[10])+0.5,
-                Integer.parseInt(textBlocks[11]),
-                Integer.parseInt(textBlocks[12])+0.5);
-        DroneEntity droneEntity = ((LauncherBE) be).droneEntity;
-        droneEntity.targetPos = targetPos;
     }
 
     private static void parseText3(String text, Level level, ServerPlayer player){
@@ -279,8 +256,9 @@ public class LauncherBE_EventHandler {
         //Spectate the drone if it matches
         if(matcher.matches() && ((LauncherBE) be).droneEntity != null){
             player.setCamera(((LauncherBE) be).droneEntity);
-            TestEventHandling.droneEntity = ((LauncherBE) be).droneEntity;
-            TestEventHandling.isSpectating = true;
+            DroneCameraEventHandler.droneEntity = ((LauncherBE) be).droneEntity;
+            DroneCameraEventHandler.isSpectating = true;
+            DroneCameraEventHandler.launcherPos = textBlocks[3] + delimiter + textBlocks[4] +delimiter + textBlocks[5];
         }
 
         //Check if the next 2 blocks joins to END SPECTATE
@@ -291,11 +269,11 @@ public class LauncherBE_EventHandler {
 
         if(matcher.matches() && ((LauncherBE) be).droneEntity != null){
             player.setCamera(null);
-            TestEventHandling.droneEntity = null;
-            TestEventHandling.isSpectating = false;
+            DroneCameraEventHandler.droneEntity = null;
+            DroneCameraEventHandler.isSpectating = false;
         }
 
-        if(textBlocks.length < 10) return;
+        if(textBlocks.length < 9) return;
 
         //Check if the next 2 blocks joins to CAMERA TO NULL
         toCheck = textBlocks[6] + delimiter
@@ -306,7 +284,10 @@ public class LauncherBE_EventHandler {
         matcher = pattern.matcher(toCheck);
 
         if(matcher.matches() && ((LauncherBE) be).droneEntity != null){
+            System.out.println("nulling");
             ((LauncherBE) be).droneEntity.cameraTargetPos = null;
+            DroneCameraEventHandler.addedPitch = 0;
+            DroneCameraEventHandler.addedYaw = 0;
         }
 
         if(textBlocks.length < 11) return;

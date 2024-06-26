@@ -23,6 +23,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import org.lwjgl.glfw.GLFW;
 
+import static com.PRYtheSheep.launchermod.Items.Projectile.Drone.DroneEntity.DRONE_TICKET_CONTROLLER;
 import static com.PRYtheSheep.launchermod.LauncherMod.*;
 import static com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherBE.LAUNCHER_TICKET_CONTROLLER;
 import static com.PRYtheSheep.launchermod.Items.Projectile.Shell.ShellItemEntity.SHELL_TICKET_CONTROLLER;
@@ -56,14 +57,15 @@ public class ClientStartup {
                 .client(LauncherPayloadS2CclientHandler.getInstance()::handleData));
         registrar.play(TracerPayloadS2C.ID, TracerPayloadS2C::new, handler -> handler
                 .client(TracerS2CclientHandler.getInstance()::handleData));
-        registrar.play(DroneEntitySettingCameraPosS2C.ID, DroneEntitySettingCameraPosS2C::new, handler -> handler
-                .client(DroneEntitySettingCameraPosS2CserverHandler.getInstance()::handleData));
+        registrar.play(DroneEntitySettingCameraPosC2S.ID, DroneEntitySettingCameraPosC2S::new, handler -> handler
+                .server(DroneEntitySettingCameraPosC2SserverHandler.getInstance()::handleData));
     }
 
     @SubscribeEvent
     public static void registerChunkTicketController(RegisterTicketControllersEvent event){
         event.register(LAUNCHER_TICKET_CONTROLLER);
         event.register(SHELL_TICKET_CONTROLLER);
+        event.register(DRONE_TICKET_CONTROLLER);
     }
 
     // Key mapping is lazily initialized so it doesn't exist until it is registered
@@ -104,6 +106,26 @@ public class ClientStartup {
 
     );
 
+    public static final Lazy<KeyMapping> KEY_K_MAPPING = Lazy.of(() ->
+            new KeyMapping(
+                    "key.launchermod.lock_drone_camera", // Will be localized using this translation key
+                    InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+                    GLFW.GLFW_KEY_K,
+                    "key.categories.launchermod.launchermod" // Mapping will be in the misc category
+            )
+
+    );
+
+    public static final Lazy<KeyMapping> KEY_J_MAPPING = Lazy.of(() ->
+            new KeyMapping(
+                    "key.launchermod.set_target_from_drone", // Will be localized using this translation key
+                    InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+                    GLFW.GLFW_KEY_J,
+                    "key.categories.launchermod.launchermod" // Mapping will be in the misc category
+            )
+
+    );
+
     // Event is on the mod event bus only on the physical client
     @SubscribeEvent
     public static void registerBindings(RegisterKeyMappingsEvent event) {
@@ -111,5 +133,7 @@ public class ClientStartup {
         event.register(KEY_RIGHT_MAPPING.get());
         event.register(KEY_UP_MAPPING.get());
         event.register(KEY_DOWN_MAPPING.get());
+        event.register(KEY_K_MAPPING.get());
+        event.register(KEY_J_MAPPING.get());
     }
 }

@@ -5,6 +5,7 @@ import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherBE;
 import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretBarrel;
 import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretBreach;
 import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherTurret.LauncherTurretLauncher;
+import com.PRYtheSheep.launchermod.Items.Item.GhostItem;
 import com.PRYtheSheep.launchermod.Items.Projectile.Drone.DroneEntity;
 import com.PRYtheSheep.launchermod.Items.Projectile.Drone.DroneItem;
 import com.PRYtheSheep.launchermod.Items.Projectile.Missile.MissileItem;
@@ -141,6 +142,9 @@ public class LauncherMod
                     .updateInterval(1)
                     .build("drone"));
 
+    //Register testItem here
+    public static final DeferredItem<Item> GHOST_ITEM = ITEMS.registerItem("ghost", GhostItem::new, new Item.Properties());
+
     // Creates a creative tab with the id "launchermod:example_tab" for the example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.launchermod")) //The language key for the title of your CreativeModeTab
@@ -150,6 +154,7 @@ public class LauncherMod
                 output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
                 output.accept(EXAMPLE_BLOCK_ITEM.get());
                 output.accept(LAUNCHER_ITEM.get());
+                output.accept(GHOST_ITEM.get());
             }).build());
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.

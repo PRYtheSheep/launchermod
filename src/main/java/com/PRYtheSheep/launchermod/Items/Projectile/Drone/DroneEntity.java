@@ -1,16 +1,19 @@
 package com.PRYtheSheep.launchermod.Items.Projectile.Drone;
 
-import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherEventHandler.TestEventHandling;
+import com.PRYtheSheep.launchermod.Blocks.Launcher.LauncherEventHandler.DroneCameraEventHandler;
 import com.PRYtheSheep.launchermod.LauncherMod;
-import com.sun.jna.platform.win32.OaIdl;
-import net.minecraft.util.Mth;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.SectionPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.world.chunk.TicketController;
 
 public class DroneEntity extends AbstractArrow {
 
@@ -30,6 +33,7 @@ public class DroneEntity extends AbstractArrow {
         super(pEntityType, pOwner, pLevel, pPickupItemStack);
     }
 
+    public static final TicketController DRONE_TICKET_CONTROLLER = new TicketController(new ResourceLocation(LauncherMod.MODID, "drone"));
     public boolean arrivedAtTargetPos = true;
     public Vec3 targetPos;
     public Vec3 cameraTargetPos;
@@ -37,6 +41,20 @@ public class DroneEntity extends AbstractArrow {
     @Override
     public void tick() {
         super.tick();
+
+        //TESTING TICKET CONTROLLER
+        if(!this.level().isClientSide){
+            DRONE_TICKET_CONTROLLER.forceChunk(
+                    (ServerLevel) this.level(),
+                    this.getOnPos(),
+                    SectionPos.blockToSectionCoord(
+                            this.getOnPos().getX()),
+                    SectionPos.blockToSectionCoord(
+                            this.getOnPos().getZ()),
+                    true,
+                    true);
+        }
+        //END OF TESTING
 
         //Main logic
         if(arrivedAtTargetPos){
@@ -55,17 +73,18 @@ public class DroneEntity extends AbstractArrow {
             }
         }
 
-        //Logic to set up the
+        //Logic to set up the camera
         if(!this.level().isClientSide){
             if(cameraTargetPos == null){
-                TestEventHandling.yaw = getYawFromVector(this.getDeltaMovement());
-                TestEventHandling.pitch = 0;
+                DroneCameraEventHandler.yaw = getYawFromVector(this.getDeltaMovement());
+                DroneCameraEventHandler.yawOld = DroneCameraEventHandler.yaw;
+                DroneCameraEventHandler.pitch = 0;
             }
             else{
-                //Make the camera point towards targetPos
+                //Make the camera point towards cameraTargetPos
                 Vec3 resultant = cameraTargetPos.subtract(this.getEyePosition());
-                TestEventHandling.yaw = getYawFromVector(resultant);
-                TestEventHandling.pitch = getPitchFromVector(resultant);
+                DroneCameraEventHandler.yaw = getYawFromVector(resultant);
+                DroneCameraEventHandler.pitch = getPitchFromVector(resultant);
 
             }
         }

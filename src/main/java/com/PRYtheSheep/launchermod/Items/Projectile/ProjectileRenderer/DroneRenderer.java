@@ -40,7 +40,6 @@ public class DroneRenderer extends EntityRenderer<DroneEntity> {
 
         float neW = entity.getYRot();
         if(neW< 0) neW+= 360;
-        System.out.println(old + " " + neW);
 
         if(neW == 0.0F) old -= 360;
 
