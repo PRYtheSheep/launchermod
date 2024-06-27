@@ -41,7 +41,7 @@ public class GhostItem extends Item {
             private static final HumanoidModel.ArmPose SWING_POSE = HumanoidModel.ArmPose.create("SWING", false, (model, entity, arm) -> {
                 if (arm == HumanoidArm.RIGHT)
                 {
-                    model.rightArm.xRot = (float) (Math.random() * Math.PI * 2);
+                    model.rightArm.xRot = -70;
                 } else
                 {
                     model.leftArm.xRot = (float) (Math.random() * Math.PI * 2);
@@ -57,6 +57,7 @@ public class GhostItem extends Item {
                     {
                         return SWING_POSE;
                     }
+                    return SWING_POSE;
                 }
                 return HumanoidModel.ArmPose.EMPTY;
             }
@@ -64,6 +65,14 @@ public class GhostItem extends Item {
             @Override
             public boolean applyForgeHandTransform(PoseStack poseStack, LocalPlayer player, HumanoidArm arm, ItemStack itemInHand, float partialTick, float equipProcess, float swingProcess) {
                 applyItemArmTransform(poseStack, arm);
+
+                //Make the ghost bob up and down according to a sine wave with a period of 3 seconds
+                //3 seconds = 60 ticks starting from tick 0?
+                poseStack.translate(
+                        0,
+                        Math.sin(Math.PI * player.tickCount / 30) * 0.05,
+                        0
+                );
 
                 if (player.getUseItem() != itemInHand) {
                     return true;
